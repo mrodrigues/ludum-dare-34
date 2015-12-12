@@ -7,7 +7,7 @@ class SimpleGame {
     game: Phaser.Game;
 
     preload() {
-        this.game.load.image('logo', 'phaser2.png');
+        this.game.load.image('logo', 'app/lib/phaser/docs/img/phaser.png');
     }
 
     create() {
@@ -18,7 +18,5 @@ class SimpleGame {
 }
 
 window.onload = () => {
-
     var game = new SimpleGame();
-
 };

@@ -8,6 +8,8 @@
   "dependencies": {},
 
   "devDependencies": {
+    "http-proxy-middleware": "~0.9.0",
+    "browser-sync": "~2.9.11",
     "gulp": "^3.6.2",
     "gulp-tsc": "^0.10.1",
     "gulp-shell": "^0.4.2",
