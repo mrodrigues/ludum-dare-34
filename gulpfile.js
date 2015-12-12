@@ -8,6 +8,7 @@ var proxyMiddleware = require('http-proxy-middleware');
 var conf = require('./conf');
 var path = require('path');
 var util = require('util');
+var rjs = require('requirejs');
 
 gulp.task('default', ['lint', 'buildrun']);
 
@@ -30,17 +31,17 @@ gulp.task('serve', ['run', 'livereload']);
 // ** Watching ** //
 
 gulp.task('watch', function () {
-  gulp.watch(conf.paths.tscripts.src, ['compile:typescript']);
-  gulp.watch(conf.paths.tscripts.dest + '/**/*.js', reloadBrowser);
+  gulp.watch(conf.paths.tscripts.src, ['build']);
+  gulp.watch(conf.paths.tscripts.dest + '/**/*.js', browserSync.reload);
 });
 
 gulp.task('watchrun', function () {
-  gulp.watch(conf.paths.tscripts.src, runseq('compile:typescript', 'run'));
+  gulp.watch(conf.paths.tscripts.src, runseq('build', 'run'));
 });
 
 // ** Compilation ** //
 
-gulp.task('build', ['compile:typescript']);
+gulp.task('build', ['compile:typescript', 'compile:requirejs']);
 gulp.task('compile:typescript', function () {
   return gulp
   .src(conf.paths.tscripts.src)
@@ -49,6 +50,23 @@ gulp.task('compile:typescript', function () {
     emitError: false
   }))
   .pipe(gulp.dest(conf.paths.tscripts.dest));
+});
+
+gulp.task('compile:requirejs', function (cb) {
+  var config = {
+    baseUrl: "app/build/src",
+    out: "dist/index.js",
+    paths: {
+      app: 'app',
+      orbit: 'orbit'
+    },
+    include: [
+      'app', 'orbit'
+    ]
+  };
+
+  return rjs.optimize(config, function(buildResponse) { cb(); }, cb);
+
 });
 
 // ** Linting ** //
@@ -95,8 +113,4 @@ function browserSyncInit(baseDir, browser) {
     server: server,
     browser: browser
   });
-}
-
-function reloadBrowser(event) {
-  browserSync.reload(event.path);
 }
