@@ -58,10 +58,11 @@ gulp.task('compile:requirejs', function (cb) {
     out: "dist/index.js",
     paths: {
       app: 'app',
-      orbit: 'orbit'
+      orbit: 'orbit',
+      plant: 'plant'
     },
     include: [
-      'app', 'orbit'
+      'app', 'orbit', 'plant'
     ]
   };
 
