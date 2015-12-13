@@ -5,14 +5,18 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Period = (function (_super) {
     __extends(Period, _super);
-    function Period(game, key, initialAngle, maxSpeed) {
-        _super.call(this, game, 0, 0, key);
+    function Period(game, key, x, y, initialAngle, maxSpeed) {
+        _super.call(this, game, x, y, key);
         game.add.existing(this);
-        game.physics.arcade.enable(this);
-        // this.orbit = new Orbit(this, 0, maxSpeed, initialAngle);
+        game.physics.p2.enable(this);
+        this.orbit = new Orbit(this, new Phaser.Point(400, 200), this.width / 2, 10);
         // this.orbit.startRotation();
         // this.position.setTo(400, 200);
-        this.anchor.set(1, 0.5);
+        // this.anchor.set(1, 0.5);
     }
+    Period.prototype.update = function () {
+        console.log('update period');
+        this.orbit.update();
+    };
     return Period;
 })(Phaser.Sprite);

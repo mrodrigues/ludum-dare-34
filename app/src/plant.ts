@@ -3,15 +3,17 @@ class Plant extends Phaser.Sprite {
 	maxWater: number;
 	energy: number;
 	maxEnergy: number;
+	energyTimer: number;
 	constructor(game: Phaser.Game, x: number, y: number, maxWater = 100, maxEnergy = 100) {
 		super(game, x, y, 'plant');
 		this.maxWater = maxWater;
 		this.water = maxWater / 2;
 		this.maxEnergy = maxEnergy;
 		this.energy = 0;
+		this.energyTimer = game.time.now;
 		
 		game.add.existing(this);
-		game.physics.arcade.enable(this);
+		game.physics.p2.enable(this);
 		
 		this.startTimer(this.decreaseWater);
 		this.startTimer(this.decreaseEnergy);
@@ -32,12 +34,23 @@ class Plant extends Phaser.Sprite {
 		this.startTimer(this.decreaseEnergy);
 	}
 	
+	increaseEnergy() {
+		if (this.game.time.now > this.energyTimer) {
+			this.energyTimer = this.game.time.now + 50;
+			this.energy += 1;
+		}
+	}
+	
 	startTimer(callback) {
 		this.game.time.events.add(500, callback, this);
 	}
 	
 	collideEnemy(enemy: Phaser.Sprite) {
 		this.game.physics.arcade.overlap(this, enemy, () => this.die());
+	}
+	
+	collideDay(day: Phaser.Sprite) {
+		(<Phaser.Physics.Arcade.Body> day.body);
 	}
 	
 	die() {

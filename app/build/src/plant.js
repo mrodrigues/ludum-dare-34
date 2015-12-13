@@ -13,8 +13,9 @@ var Plant = (function (_super) {
         this.water = maxWater / 2;
         this.maxEnergy = maxEnergy;
         this.energy = 0;
+        this.energyTimer = game.time.now;
         game.add.existing(this);
-        game.physics.arcade.enable(this);
+        game.physics.p2.enable(this);
         this.startTimer(this.decreaseWater);
         this.startTimer(this.decreaseEnergy);
     }
@@ -31,12 +32,21 @@ var Plant = (function (_super) {
         }
         this.startTimer(this.decreaseEnergy);
     };
+    Plant.prototype.increaseEnergy = function () {
+        if (this.game.time.now > this.energyTimer) {
+            this.energyTimer = this.game.time.now + 50;
+            this.energy += 1;
+        }
+    };
     Plant.prototype.startTimer = function (callback) {
         this.game.time.events.add(500, callback, this);
     };
     Plant.prototype.collideEnemy = function (enemy) {
         var _this = this;
         this.game.physics.arcade.overlap(this, enemy, function () { return _this.die(); });
+    };
+    Plant.prototype.collideDay = function (day) {
+        day.body;
     };
     Plant.prototype.die = function () {
         // this.kill();

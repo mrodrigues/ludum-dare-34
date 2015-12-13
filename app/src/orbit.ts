@@ -1,25 +1,29 @@
 class Orbit {
     object: Phaser.Sprite;
-    body: Phaser.Physics.Arcade.Body;
+    body: Phaser.Physics.P2.Body;
     maxSpeed: number;
     direction: number;
+    radius: number;
+    pivot: Phaser.Point;
+    angularSpeed: number;
 
-    constructor(object: Phaser.Sprite, distance: number, maxSpeed: number, initialAngle = 0, initialDirection = 1) {
+    constructor(object: Phaser.Sprite, pivot: Phaser.Point, radius: number, maxSpeed: number, initialAngle = 0, initialDirection = 1) {
         this.direction = initialDirection;
         this.body = object.body;
         this.object = object;
         this.maxSpeed = maxSpeed;
+        this.radius = radius;
+        this.pivot = pivot;
+        this.angularSpeed = 0;
         
-        // this.object.anchor.setTo(0.5, 0.5);
-        this.object.pivot.set(0, distance);
-        this.object.angle = initialAngle;
-        this.object.position.setTo(this.object.game.world.centerX, this.object.game.world.height + 200);
-        
-        this.startRotation();
+        this.object.body.angle = initialAngle;
     }
     
-    startRotation() {
-        this.setAngularSpeed(this.maxSpeed);
+    update() {
+        this.object.body.angle += this.angularSpeed;
+        let radians = this.degInRad();
+        this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
+        this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     }
     
     addSpeed(speed) {
@@ -38,12 +42,15 @@ class Orbit {
         this.setAngularSpeed(this.getAngularSpeed());
     }
     
-    private setAngularSpeed(velocity) {
-        this.body.angularVelocity = velocity * this.direction;
-        console.log("New angular velocity: ", this.body.angularVelocity);
+    private setAngularSpeed(angularSpeed) {
+        this.angularSpeed = angularSpeed * this.direction;
     }
     
     private getAngularSpeed() {
-        return Math.abs(this.body.angularVelocity);
+        return Math.abs(this.angularSpeed);
+    }
+    
+    private degInRad() {
+        return (<any> this.object.game.math).degToRad(this.object.body.angle);
     }
 }
