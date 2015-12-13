@@ -60,10 +60,11 @@ gulp.task('compile:requirejs', function (cb) {
       app: 'app',
       orbit: 'orbit',
       plant: 'plant',
-      enemy: 'enemy'
+      enemy: 'enemy',
+      period: 'period'
     },
     include: [
-      'app', 'orbit', 'plant', 'enemy'
+      'app', 'orbit', 'plant', 'enemy', 'period'
     ]
   };
 
