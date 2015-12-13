@@ -9,7 +9,7 @@ var Orbit = (function () {
         this.object.anchor.setTo(0.5, 0.5);
         this.object.pivot.set(0, distance);
         this.object.angle = initialAngle;
-        this.object.position.setTo(this.object.game.world.centerX, this.object.game.world.height);
+        this.object.position.setTo(this.object.game.world.centerX, this.object.game.world.height + 200);
         this.startRotation();
     }
     Orbit.prototype.startRotation = function () {

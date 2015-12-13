@@ -4,7 +4,7 @@ class Orbit {
     maxSpeed: number;
     direction: number;
 
-    constructor(object, distance, maxSpeed, initialAngle = 0, initialDirection = 1) {
+    constructor(object: Phaser.Sprite, distance: number, maxSpeed: number, initialAngle = 0, initialDirection = 1) {
         this.direction = initialDirection;
         this.body = object.body;
         this.object = object;
@@ -13,7 +13,7 @@ class Orbit {
         this.object.anchor.setTo(0.5, 0.5);
         this.object.pivot.set(0, distance);
         this.object.angle = initialAngle;
-        this.object.position.setTo(this.object.game.world.centerX, this.object.game.world.height);
+        this.object.position.setTo(this.object.game.world.centerX, this.object.game.world.height + 200);
         
         this.startRotation();
     }

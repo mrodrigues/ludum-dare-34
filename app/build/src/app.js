@@ -1,6 +1,6 @@
 var App = (function () {
     function App() {
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', {
+        this.game = new Phaser.Game(800, 400, Phaser.AUTO, 'content', {
             preload: this.preload,
             create: this.create,
             update: this.update,
@@ -9,21 +9,29 @@ var App = (function () {
     }
     App.prototype.preload = function () {
         this.game.load.image('logo', 'app/lib/phaser/docs/img/phaser.png');
+        this.game.load.image('plant', 'img/plant.jpg');
     };
     App.prototype.create = function () {
+        this.enemies = [];
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         // this.game.physics.p2.applyDamping = false;
         // this.game.physics.p2.applyGravity = false;
         // this.game.physics.p2.applySpringForces = false;
-        var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.height, 'logo');
+        var logo = this.game.add.sprite(0, 0, 'logo');
         this.logo = logo;
         logo.inputEnabled = true;
+        this.enemies.push(logo);
         this.game.physics.arcade.enable(logo);
         this.orbit = new Orbit(logo, 400, 100);
         this.orbit.startRotation();
-        window['orbit'] = this.orbit;
+        window['game'] = this;
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY);
     };
     App.prototype.update = function () {
+        for (var _i = 0, _a = this.enemies; _i < _a.length; _i++) {
+            var enemy = _a[_i];
+            this.plant.collideEnemy(enemy);
+        }
     };
     App.prototype.render = function () {
         this.game.debug.pointer(this.game.input.activePointer);
@@ -32,6 +40,10 @@ var App = (function () {
         this.game.debug.spriteInfo(this.logo, 32, 200);
         this.game.debug.spriteBounds(this.logo);
         this.game.debug.body(this.logo);
+        this.game.debug.spriteBounds(this.plant);
+        this.game.debug.body(this.plant);
+        this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
+        this.game.debug.text("Water: " + this.plant.water, 700, 64);
     };
     return App;
 })();
