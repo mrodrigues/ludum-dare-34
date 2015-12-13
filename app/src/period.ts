@@ -5,6 +5,7 @@ class Period extends Phaser.Sprite {
 		super(game, x, y, key);
 		game.add.existing(this);
 		game.physics.p2.enable(this);
+		this.friction = -5;
 		
         this.orbit = new Orbit(this, new Phaser.Point(400, 200), this.width / 2, 10);
         // this.orbit.startRotation();
@@ -13,7 +14,10 @@ class Period extends Phaser.Sprite {
 	}
 	
 	update () {
-		// this.orbit.addSpeed(this.friction);
 		this.orbit.update();
+	}
+	
+	applyFriction () {
+		this.orbit.addSpeed(this.friction * this.game.time.physicsElapsed);
 	}
 }

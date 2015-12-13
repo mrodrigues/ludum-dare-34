@@ -9,6 +9,8 @@ var Player = (function () {
         this.acceleration = 1;
     }
     Player.prototype.update = function () {
+        // TODO: Slow down when changing direction
+        // TODO: Adjust speed and friction;
         var acceleration = this.acceleration * this.game.time.physicsElapsed;
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
             for (var _i = 0, _a = this.objects; _i < _a.length; _i++) {
@@ -31,7 +33,7 @@ var Player = (function () {
         else {
             for (var _d = 0, _e = this.objects; _d < _e.length; _d++) {
                 var object = _e[_d];
-                object.orbit.addSpeed(-acceleration);
+                object.applyFriction();
             }
         }
     };

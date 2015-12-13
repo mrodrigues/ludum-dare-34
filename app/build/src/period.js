@@ -9,14 +9,17 @@ var Period = (function (_super) {
         _super.call(this, game, x, y, key);
         game.add.existing(this);
         game.physics.p2.enable(this);
+        this.friction = -5;
         this.orbit = new Orbit(this, new Phaser.Point(400, 200), this.width / 2, 10);
         // this.orbit.startRotation();
         // this.position.setTo(400, 200);
         // this.anchor.set(1, 0.5);
     }
     Period.prototype.update = function () {
-        // this.orbit.addSpeed(this.friction);
         this.orbit.update();
+    };
+    Period.prototype.applyFriction = function () {
+        this.orbit.addSpeed(this.friction * this.game.time.physicsElapsed);
     };
     return Period;
 })(Phaser.Sprite);
