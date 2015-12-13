@@ -16,7 +16,7 @@ class App {
     enemies: Array<Phaser.Sprite>;
     day: Period;
     night: Period;
-    player: Phaser.Sprite;
+    player: Player;
     pivot: Phaser.Point;
 
     preload() {
@@ -44,6 +44,8 @@ class App {
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
+        
+        this.player = new Player(this.game, this.day, this.night);
         
         // this.plant = new Plant(this.game, 100, 100);
 
@@ -90,6 +92,15 @@ class App {
     }
 
     update() {
+        this.player.update();
+        // let speed = 5;
+        // if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+        //     this.day.orbit.addSpeed(-speed);
+        //     this.night.orbit.addSpeed(-speed);
+        // } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+        //     this.day.orbit.addSpeed(speed);
+        //     this.night.orbit.addSpeed(speed);
+        // }
         // for (let enemy of this.enemies) {
         //     this.plant.collideEnemy(enemy);
         // }

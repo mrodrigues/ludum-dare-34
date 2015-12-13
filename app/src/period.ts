@@ -1,5 +1,6 @@
 class Period extends Phaser.Sprite {
 	orbit: Orbit;
+	friction: number;
 	constructor(game: Phaser.Game, key: string, x: number, y: number, initialAngle: number, maxSpeed: number) {
 		super(game, x, y, key);
 		game.add.existing(this);
@@ -12,7 +13,7 @@ class Period extends Phaser.Sprite {
 	}
 	
 	update () {
-		console.log('update period');
+		// this.orbit.addSpeed(this.friction);
 		this.orbit.update();
 	}
 }

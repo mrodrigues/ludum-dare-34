@@ -15,7 +15,7 @@ var Period = (function (_super) {
         // this.anchor.set(1, 0.5);
     }
     Period.prototype.update = function () {
-        console.log('update period');
+        // this.orbit.addSpeed(this.friction);
         this.orbit.update();
     };
     return Period;
