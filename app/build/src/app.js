@@ -70,7 +70,10 @@ var App = (function () {
     };
     App.prototype.checkCollisionsForPlant = function (object) {
         if (object == this.day) {
-            this.plant.collidedDay(object);
+            this.plant.collidedDay();
+        }
+        else if (object == this.night) {
+            this.plant.collidedNight();
         }
     };
     App.prototype.update = function () {
@@ -112,6 +115,7 @@ var App = (function () {
         // this.game.debug.body(this.day, 'green');
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
+        this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
     };
     return App;
 })();

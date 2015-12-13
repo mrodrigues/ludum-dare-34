@@ -4,6 +4,7 @@ class Plant extends Phaser.Sprite {
 	energy: number;
 	maxEnergy: number;
 	energyTimer: number;
+	growth: number;
 	constructor(game: Phaser.Game, x: number, y: number, maxWater = 100, maxEnergy = 100) {
 		super(game, x, y, 'plant');
 		this.name = 'plant';
@@ -12,13 +13,30 @@ class Plant extends Phaser.Sprite {
 		this.maxEnergy = maxEnergy;
 		this.energy = 0;
 		this.energyTimer = game.time.now;
+		this.growth = 0;
 		
 		game.add.existing(this);
 		game.physics.p2.enable(this);
 		(<Phaser.Physics.P2.Body> this.body).static = true;
 		
 		this.startTimer(this.decreaseWater);
-		this.startTimer(this.decreaseEnergy);
+	}
+	
+	grow() {
+		if (this.game.time.now > this.energyTimer) {
+			this.energyTimer = this.game.time.now + 50;
+			if (this.energy > 0) {
+				this.energy -= 1;
+				this.growth += 1;
+				this.checkWin();
+			}
+		}
+	}
+	
+	checkWin() {
+		if (this.growth > 1000) {
+			console.log('Win!');
+		}
 	}
 	
 	decreaseWater() {
@@ -27,13 +45,6 @@ class Plant extends Phaser.Sprite {
 			this.die();
 		}
 		this.startTimer(this.decreaseWater);
-	}
-	
-	decreaseEnergy() {
-		if (this.energy > 0) {
-			this.energy -= 1;
-		}
-		this.startTimer(this.decreaseEnergy);
 	}
 	
 	increaseEnergy() {
@@ -51,8 +62,12 @@ class Plant extends Phaser.Sprite {
 		this.game.physics.arcade.overlap(this, enemy, () => this.die());
 	}
 	
-	collidedDay(day: Phaser.Sprite) {
+	collidedDay() {
 		this.increaseEnergy();
+	}
+	
+	collidedNight() {
+		this.grow();
 	}
 	
 	die() {

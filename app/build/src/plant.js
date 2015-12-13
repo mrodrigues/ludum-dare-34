@@ -15,24 +15,33 @@ var Plant = (function (_super) {
         this.maxEnergy = maxEnergy;
         this.energy = 0;
         this.energyTimer = game.time.now;
+        this.growth = 0;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.static = true;
         this.startTimer(this.decreaseWater);
-        this.startTimer(this.decreaseEnergy);
     }
+    Plant.prototype.grow = function () {
+        if (this.game.time.now > this.energyTimer) {
+            this.energyTimer = this.game.time.now + 50;
+            if (this.energy > 0) {
+                this.energy -= 1;
+                this.growth += 1;
+                this.checkWin();
+            }
+        }
+    };
+    Plant.prototype.checkWin = function () {
+        if (this.growth > 1000) {
+            console.log('Win!');
+        }
+    };
     Plant.prototype.decreaseWater = function () {
         this.water -= 1;
         if (this.water <= 0) {
             this.die();
         }
         this.startTimer(this.decreaseWater);
-    };
-    Plant.prototype.decreaseEnergy = function () {
-        if (this.energy > 0) {
-            this.energy -= 1;
-        }
-        this.startTimer(this.decreaseEnergy);
     };
     Plant.prototype.increaseEnergy = function () {
         if (this.game.time.now > this.energyTimer) {
@@ -47,8 +56,11 @@ var Plant = (function (_super) {
         var _this = this;
         this.game.physics.arcade.overlap(this, enemy, function () { return _this.die(); });
     };
-    Plant.prototype.collidedDay = function (day) {
+    Plant.prototype.collidedDay = function () {
         this.increaseEnergy();
+    };
+    Plant.prototype.collidedNight = function () {
+        this.grow();
     };
     Plant.prototype.die = function () {
         // this.kill();

@@ -95,7 +95,9 @@ class App {
     
     checkCollisionsForPlant(object: Phaser.Sprite) {
         if (object == this.day) {
-            this.plant.collidedDay(object);
+            this.plant.collidedDay();
+        } else if (object == this.night) {
+            this.plant.collidedNight();
         }
     }
 
@@ -142,6 +144,7 @@ class App {
 
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
+        this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
     }
 }
 
