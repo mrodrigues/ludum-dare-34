@@ -9,6 +9,7 @@ var Plant = (function (_super) {
         if (maxWater === void 0) { maxWater = 100; }
         if (maxEnergy === void 0) { maxEnergy = 100; }
         _super.call(this, game, x, y, 'plant');
+        this.name = 'plant';
         this.maxWater = maxWater;
         this.water = maxWater / 2;
         this.maxEnergy = maxEnergy;
@@ -16,6 +17,7 @@ var Plant = (function (_super) {
         this.energyTimer = game.time.now;
         game.add.existing(this);
         game.physics.p2.enable(this);
+        this.body.static = true;
         this.startTimer(this.decreaseWater);
         this.startTimer(this.decreaseEnergy);
     }
@@ -45,8 +47,8 @@ var Plant = (function (_super) {
         var _this = this;
         this.game.physics.arcade.overlap(this, enemy, function () { return _this.die(); });
     };
-    Plant.prototype.collideDay = function (day) {
-        day.body;
+    Plant.prototype.collidedDay = function (day) {
+        this.increaseEnergy();
     };
     Plant.prototype.die = function () {
         // this.kill();

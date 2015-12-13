@@ -5,7 +5,9 @@ class App {
                 preload: this.preload,
                 create: this.create,
                 update: this.update,
-                render: this.render
+                render: this.render,
+                checkCollisions: this.checkCollisions,
+                checkCollisionsForPlant: this.checkCollisionsForPlant
             });
     }
 
@@ -46,8 +48,6 @@ class App {
         this.night.body.debug = true;
         
         this.player = new Player(this.game, this.day, this.night);
-        
-        // this.plant = new Plant(this.game, 100, 100);
 
         // let player = this.game.add.sprite(0, 0);
 
@@ -76,19 +76,27 @@ class App {
         // this.enemies.push(cow);
 
         window['game'] = this;
-        console.log(teste);
-        this.game.physics.p2.setPostBroadphaseCallback(allowPassThrough, this);
-        this.game.input.onDown.add(teste, this);
-        
-        function allowPassThrough() { return false; }
-    
-        function teste() {
-            console.log(this.day);
-            // this.day.body.rotateLeft(10);
-            // this.night.body.rotateLeft(10);
-        }
+        console.log(this);
+        this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
 
-        // this.plant = new Plant(this.game, 300, 100);//this.game.world.centerX, this.game.world.centerY);
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 150);
+    }
+
+    checkCollisions(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
+        if (obj1.sprite == this.plant) {
+            this.checkCollisionsForPlant(obj2.sprite);
+        } else if (obj2.sprite == this.plant) {
+            this.checkCollisionsForPlant(obj2.sprite);
+        }
+        
+        // Allow any object to overlap
+        return false;
+    }
+    
+    checkCollisionsForPlant(object: Phaser.Sprite) {
+        if (object == this.day) {
+            this.plant.collidedDay(object);
+        }
     }
 
     update() {
@@ -104,7 +112,6 @@ class App {
         // for (let enemy of this.enemies) {
         //     this.plant.collideEnemy(enemy);
         // }
-        // this.plant.collideDay(this.day);
         // let radius = this.day.width / 2;
         // this.day.body.angle += 1;
         // this.day.body.x = this.pivot.x + radius * Math.cos((<any> this.game.math).degToRad(this.day.body.angle));
@@ -133,8 +140,8 @@ class App {
         // this.game.debug.spriteBounds(this.day);
         // this.game.debug.body(this.day, 'green');
 
-        // this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
-        // this.game.debug.text("Water: " + this.plant.water, 700, 64);
+        this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
+        this.game.debug.text("Water: " + this.plant.water, 700, 64);
     }
 }
 

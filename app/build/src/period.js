@@ -7,6 +7,7 @@ var Period = (function (_super) {
     __extends(Period, _super);
     function Period(game, key, x, y, initialAngle, maxSpeed) {
         _super.call(this, game, x, y, key);
+        this.name = key;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.friction = -5;
