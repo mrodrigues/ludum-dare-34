@@ -16,7 +16,7 @@ class App {
     enemies: Array<Phaser.Sprite>;
 
     preload() {
-        this.game.load.image('logo', 'app/lib/phaser/docs/img/phaser.png');
+        this.game.load.image('cow', 'img/cow.jpg');
         this.game.load.image('plant', 'img/plant.jpg');
     }
 
@@ -24,19 +24,16 @@ class App {
         
         this.enemies = [];
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        
-        // this.game.physics.p2.applyDamping = false;
-        // this.game.physics.p2.applyGravity = false;
-        // this.game.physics.p2.applySpringForces = false;
 
-        let logo = this.game.add.sprite(0, 0, 'logo');
+        let logo = this.game.add.sprite(0, 0, 'cow');
         this.logo = logo;
+        logo.scale.setTo(0.5);
         logo.inputEnabled = true;
         this.enemies.push(logo);
 
         this.game.physics.arcade.enable(logo);
 
-        this.orbit = new Orbit(logo, 400, 100);
+        this.orbit = new Orbit(logo, 1000, 100);
         this.orbit.startRotation();
 
         window['game'] = this;

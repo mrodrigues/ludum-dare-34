@@ -6,7 +6,7 @@ var Orbit = (function () {
         this.body = object.body;
         this.object = object;
         this.maxSpeed = maxSpeed;
-        this.object.anchor.setTo(0.5, 0.5);
+        // this.object.anchor.setTo(0.5, 0.5);
         this.object.pivot.set(0, distance);
         this.object.angle = initialAngle;
         this.object.position.setTo(this.object.game.world.centerX, this.object.game.world.height + 200);
