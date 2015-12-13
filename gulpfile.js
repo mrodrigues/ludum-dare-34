@@ -59,10 +59,11 @@ gulp.task('compile:requirejs', function (cb) {
     paths: {
       app: 'app',
       orbit: 'orbit',
-      plant: 'plant'
+      plant: 'plant',
+      enemy: 'enemy'
     },
     include: [
-      'app', 'orbit', 'plant'
+      'app', 'orbit', 'plant', 'enemy'
     ]
   };
 

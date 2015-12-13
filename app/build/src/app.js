@@ -14,14 +14,11 @@ var App = (function () {
     App.prototype.create = function () {
         this.enemies = [];
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        var logo = this.game.add.sprite(0, 0, 'cow');
-        this.logo = logo;
-        logo.scale.setTo(0.5);
-        logo.inputEnabled = true;
-        this.enemies.push(logo);
-        this.game.physics.arcade.enable(logo);
-        this.orbit = new Orbit(logo, 1000, 100);
-        this.orbit.startRotation();
+        var cow = new Enemy(this.game, 'cow', 1000, 100);
+        this.cow = cow;
+        cow.scale.setTo(0.5);
+        cow.inputEnabled = true;
+        this.enemies.push(cow);
         window['game'] = this;
         this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY);
     };
@@ -33,11 +30,11 @@ var App = (function () {
     };
     App.prototype.render = function () {
         this.game.debug.pointer(this.game.input.activePointer);
-        this.game.debug.spriteInputInfo(this.logo, 32, 32);
-        this.game.debug.spriteCoords(this.logo, 32, 128);
-        this.game.debug.spriteInfo(this.logo, 32, 200);
-        this.game.debug.spriteBounds(this.logo);
-        this.game.debug.body(this.logo);
+        this.game.debug.spriteInputInfo(this.cow, 32, 32);
+        this.game.debug.spriteCoords(this.cow, 32, 128);
+        this.game.debug.spriteInfo(this.cow, 32, 200);
+        this.game.debug.spriteBounds(this.cow);
+        this.game.debug.body(this.cow);
         this.game.debug.spriteBounds(this.plant);
         this.game.debug.body(this.plant);
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
