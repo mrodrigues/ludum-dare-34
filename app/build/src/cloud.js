@@ -13,9 +13,12 @@ var Cloud = (function (_super) {
         this.body.collideWorldBounds = false;
         this.friction = 0.1;
         this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
+        this.rainSound = game.sound.add('rain', 1, true);
+        this.rainSound.play();
     }
     Cloud.prototype.update = function () {
         this.orbit.update();
+        this.rainSound.volume = (180 - Math.abs(this.angle)) / 180;
     };
     Cloud.prototype.addSpeed = function (speed) {
         speed *= 10;
@@ -23,6 +26,10 @@ var Cloud = (function (_super) {
     };
     Cloud.prototype.applyFriction = function () {
         this.orbit.interpolateSpeed(this.friction, this.orbit.maxSpeed);
+    };
+    Cloud.prototype.destroy = function () {
+        Phaser.Sprite.prototype.destroy.apply(this, arguments);
+        this.rainSound.destroy();
     };
     return Cloud;
 })(Phaser.Sprite);

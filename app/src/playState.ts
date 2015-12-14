@@ -28,6 +28,8 @@ class PlayState {
         this.game.load.image('cloud', 'img/cloud.png');
         this.game.load.image('ground', 'img/ground.png');
         this.game.load.audio('bg', 'sounds/bg.mp3');
+        this.game.load.audio('grow', 'sounds/grow.wav');
+        this.game.load.audio('rain', 'sounds/rain.mp3');
     }
 
     create() {
@@ -61,13 +63,14 @@ class PlayState {
         this.ai = new AI(cow);
         this.enemies.push(cow);
 
-        window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
         this.bgMusic = this.game.sound.add('bg', 1, true);
-        // this.bgMusic.play();
+        this.bgMusic.play();
         
         this.energyBar = new Bar(0x00ff00, this.plant.maxEnergy, 200, this.game, 10, 10);
         this.waterBar = new Bar(0x0000ff, this.plant.maxWater, 200, this.game, 10, 40);
+        
+        window['game'] = this;
     }
 
     allowPassThrough(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
@@ -161,6 +164,6 @@ class PlayState {
     }
     
     shutdown() {
-        this.bgMusic.stop();
+        this.bgMusic.destroy();
     }
 }

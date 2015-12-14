@@ -10,6 +10,8 @@ var PlayState = (function () {
         this.game.load.image('cloud', 'img/cloud.png');
         this.game.load.image('ground', 'img/ground.png');
         this.game.load.audio('bg', 'sounds/bg.mp3');
+        this.game.load.audio('grow', 'sounds/grow.wav');
+        this.game.load.audio('rain', 'sounds/rain.mp3');
     };
     PlayState.prototype.create = function () {
         this.debug = false;
@@ -34,12 +36,12 @@ var PlayState = (function () {
         this.cow = cow;
         this.ai = new AI(cow);
         this.enemies.push(cow);
-        window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
         this.bgMusic = this.game.sound.add('bg', 1, true);
-        // this.bgMusic.play();
+        this.bgMusic.play();
         this.energyBar = new Bar(0x00ff00, this.plant.maxEnergy, 200, this.game, 10, 10);
         this.waterBar = new Bar(0x0000ff, this.plant.maxWater, 200, this.game, 10, 40);
+        window['game'] = this;
     };
     PlayState.prototype.allowPassThrough = function (obj1, obj2) {
         return false;
@@ -119,7 +121,7 @@ var PlayState = (function () {
         });
     };
     PlayState.prototype.shutdown = function () {
-        this.bgMusic.stop();
+        this.bgMusic.destroy();
     };
     return PlayState;
 })();
