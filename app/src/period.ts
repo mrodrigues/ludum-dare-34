@@ -9,7 +9,7 @@ class Period extends Phaser.Sprite {
 		game.physics.p2.enable(this);
 		this.body.collideWorldBounds = false;
 		
-        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), this.width / 2, 10);
+        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), this.height / 2, 10);
         // this.orbit.startRotation();
 		// this.position.setTo(400, 200);
 		// this.anchor.set(1, 0.5);

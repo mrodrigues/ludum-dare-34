@@ -1,13 +1,16 @@
 class BoundingPolygon {
 	sprite: Phaser.Sprite;
+        points: Array<Phaser.Point>;
+        polygon: Phaser.Polygon;
 	constructor(sprite: Phaser.Sprite) {
 		this.sprite = sprite;
+                this.points = this.rotatedPoints(this.sprite);
+                this.polygon = new Phaser.Polygon(this.points.concat([this.points[0]]));
 	}
         
         containSprite(contained: Phaser.Sprite) {
                 let containedPoints = this.rotatedPoints(contained);
-                let containerPolygon = new Phaser.Polygon(this.rotatedPoints(this.sprite));
-                return containedPoints.every((point) => containerPolygon.contains(point.x, point.y));
+                return containedPoints.every((point) => this.polygon.contains(point.x, point.y));
         }
         
         private rotatedPoints(sprite: Phaser.Sprite) {
@@ -19,7 +22,7 @@ class BoundingPolygon {
                 let bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
                 let tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
                 let br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
-                return [tl, bl, tr, br];
+                return [tl, bl, br, tr];
         }
         
         private rotatePoints(rotation: number, sprite: Phaser.Sprite, points: Array<Phaser.Point>) {

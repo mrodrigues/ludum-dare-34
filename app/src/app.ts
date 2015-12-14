@@ -1,7 +1,7 @@
 class App {
     constructor() {
         this.game = new Phaser.Game(
-            800, 400, Phaser.AUTO, 'content', {
+            1000, 600, Phaser.AUTO, 'content', {
                 preload: this.preload,
                 create: this.create,
                 update: this.update,
@@ -38,10 +38,10 @@ class App {
         this.game.physics.p2.applyDamping = false;
         this.game.physics.p2.applySpringForces = false;
 
-        this.day = new Period(this.game, 'day', 100, 100, 0, 50);
+        this.day = new Period(this.game, 'day', 0, 0, 0, 50);
         this.day.body.debug = true;
         // this.day.anchor.setTo(1, 0.5);
-        this.night = new Period(this.game, 'night', 100, 100, 0, 50);
+        this.night = new Period(this.game, 'night', 0, 0, 0, 50);
         this.night.body.angle = 180;
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
@@ -69,17 +69,18 @@ class App {
         // player.position.set(this.game.world.width / 2, this.game.world.height);
         // player.position.set(this.game.world.centerX, this.game.world.centerY);
 
-        // let cow = new Enemy(this.game, 'cow', 1000, 100);
-        // this.cow = cow;
+        let cow = new Enemy(this.game, 'cow', 1000, 100);
+        cow.body.debug = true;
+        this.cow = cow;
         // cow.scale.setTo(0.5);
         // cow.inputEnabled = true;
-        // this.enemies.push(cow);
+        this.enemies.push(cow);
 
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
         // this.game.physics.p2.on
 
-        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY);
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 100);
         this.plant.body.angle = 45;
     }
 
@@ -104,15 +105,17 @@ class App {
 
     update() {
         this.player.update();
-        
+
         let dayPolygon = new BoundingPolygon(this.day);
         let nightPolygon = new BoundingPolygon(this.night);
-        
+
         if (dayPolygon.containSprite(this.plant)) {
             this.plant.collidedDay();
         } else if (nightPolygon.containSprite(this.plant)) {
             this.plant.collidedNight();
         }
+        
+        // console.log('angle: ' + this.day.body.angle + ', x: ' + this.day.body.x + ', y: ' + this.day.body.y);
         // for (let enemy of this.enemies) {
         //     this.plant.collideEnemy(enemy);
         // }
@@ -148,7 +151,27 @@ class App {
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
 
-        let polygon = new BoundingPolygon(this.day);
+        let dayPolygon = new BoundingPolygon(this.day);
+        let plantPolygon = new BoundingPolygon(this.plant);
+        
+        // this.game.debug.geom(plantPolygon.polygon, 'red', true);
+        
+        for (let i = 1; i < dayPolygon.points.length - 1; i++) {
+            let point = dayPolygon.points[i];
+            let previousPoint = dayPolygon.points[i - 1];
+            this.game.debug.geom(new Phaser.Line(point.x, point.y, previousPoint.x, previousPoint.y), 'green');
+        }
+        
+        dayPolygon.points.forEach((point) => {
+            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), 'blue', true);
+            this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
+        });
+
+        plantPolygon.points.forEach((point) => {
+            let color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
+            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
+            this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
+        });
     }
 }
 

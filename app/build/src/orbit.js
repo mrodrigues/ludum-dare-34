@@ -13,7 +13,7 @@ var Orbit = (function () {
     }
     Orbit.prototype.update = function () {
         this.object.body.angle += this.angularSpeed;
-        var radians = this.object.body.rotation;
+        var radians = this.object.body.rotation - Math.PI / 2;
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     };

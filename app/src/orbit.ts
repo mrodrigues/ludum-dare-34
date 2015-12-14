@@ -21,7 +21,7 @@ class Orbit {
     
     update() {
         this.object.body.angle += this.angularSpeed;
-        let radians = this.object.body.rotation;
+        let radians = this.object.body.rotation - Math.PI / 2;
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     }
@@ -42,7 +42,7 @@ class Orbit {
         this.setAngularSpeed(this.getAngularSpeed());
     }
     
-    private setAngularSpeed(angularSpeed) {
+    setAngularSpeed(angularSpeed) {
         this.angularSpeed = angularSpeed * this.direction;
     }
     

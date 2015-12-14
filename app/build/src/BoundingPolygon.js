@@ -1,11 +1,13 @@
 var BoundingPolygon = (function () {
     function BoundingPolygon(sprite) {
         this.sprite = sprite;
+        this.points = this.rotatedPoints(this.sprite);
+        this.polygon = new Phaser.Polygon(this.points.concat([this.points[0]]));
     }
     BoundingPolygon.prototype.containSprite = function (contained) {
+        var _this = this;
         var containedPoints = this.rotatedPoints(contained);
-        var containerPolygon = new Phaser.Polygon(this.rotatedPoints(this.sprite));
-        return containedPoints.every(function (point) { return containerPolygon.contains(point.x, point.y); });
+        return containedPoints.every(function (point) { return _this.polygon.contains(point.x, point.y); });
     };
     BoundingPolygon.prototype.rotatedPoints = function (sprite) {
         return this.rotatePoints(sprite.body.rotation, sprite, this.extractPoints(sprite));
@@ -15,7 +17,7 @@ var BoundingPolygon = (function () {
         var bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
         var tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
         var br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
-        return [tl, bl, tr, br];
+        return [tl, bl, br, tr];
     };
     BoundingPolygon.prototype.rotatePoints = function (rotation, sprite, points) {
         var _this = this;

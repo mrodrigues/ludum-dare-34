@@ -8,9 +8,13 @@ var Enemy = (function (_super) {
     function Enemy(game, key, orbitDistance, maxSpeed) {
         _super.call(this, game, 0, 0, key);
         game.add.existing(this);
-        game.physics.arcade.enable(this);
-        this.orbit = new Orbit(this, orbitDistance, maxSpeed);
-        this.orbit.startRotation();
+        game.physics.p2.enable(this);
+        this.body.collideWorldBounds = false;
+        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), 200, 1);
+        this.orbit.setAngularSpeed(1);
     }
+    Enemy.prototype.update = function () {
+        this.orbit.update();
+    };
     return Enemy;
 })(Phaser.Sprite);
