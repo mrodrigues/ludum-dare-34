@@ -67,9 +67,8 @@ var Plant = (function (_super) {
     Plant.prototype.startTimer = function (callback) {
         this.game.time.events.add(1000, callback, this);
     };
-    Plant.prototype.collideEnemy = function (enemy) {
-        var _this = this;
-        this.game.physics.arcade.overlap(this, enemy, function () { return _this.die(); });
+    Plant.prototype.collidedEnemy = function () {
+        this.die();
     };
     Plant.prototype.collidedDay = function () {
         this.increaseEnergy();

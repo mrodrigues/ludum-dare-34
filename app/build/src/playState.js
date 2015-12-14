@@ -46,6 +46,13 @@ var PlayState = (function () {
         var nightPolygon = new BoundingPolygon(this.night);
         var cloudPolygon = new BoundingPolygon(this.cloud);
         var plantPolygon = this.plant.createPolygon();
+        for (var _i = 0, _a = this.enemies; _i < _a.length; _i++) {
+            var enemy = _a[_i];
+            var enemyPolygon = new BoundingPolygon(enemy);
+            if (enemyPolygon.containPolygon(plantPolygon)) {
+                this.plant.collidedEnemy();
+            }
+        }
         if (dayPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedDay();
         }

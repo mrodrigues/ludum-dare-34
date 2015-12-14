@@ -83,8 +83,8 @@ class Plant extends Phaser.Sprite {
 		this.game.time.events.add(1000, callback, this);
 	}
 	
-	collideEnemy(enemy: Phaser.Sprite) {
-		this.game.physics.arcade.overlap(this, enemy, () => this.die());
+	collidedEnemy() {
+		this.die();
 	}
 	
 	collidedDay() {

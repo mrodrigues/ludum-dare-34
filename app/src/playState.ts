@@ -72,6 +72,13 @@ class PlayState {
         let nightPolygon = new BoundingPolygon(this.night);
         let cloudPolygon = new BoundingPolygon(this.cloud);
         let plantPolygon = this.plant.createPolygon();
+        
+        for (let enemy of this.enemies) {
+            let enemyPolygon = new BoundingPolygon(enemy);
+            if (enemyPolygon.containPolygon(plantPolygon)) {
+                this.plant.collidedEnemy();
+            }
+        }
 
         if (dayPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedDay();
