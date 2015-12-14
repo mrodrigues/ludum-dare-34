@@ -107,7 +107,6 @@ var App = (function () {
         // this.game.debug.body(this.cow);
         // this.game.debug.spriteBounds(this.plant);
         // this.game.debug.body(this.plant);
-        var _this = this;
         // this.game.debug.spriteBounds(this.player);
         // this.game.debug.body(this.player, 'red');
         // this.game.debug.spriteBounds(this.player);
@@ -117,51 +116,7 @@ var App = (function () {
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
-        var points = rotatePoints(this.plant.body.rotation, this.plant, extractPoints(this.plant));
-        var dayPoints = rotatePoints(this.day.body.rotation, this.day, extractPoints(this.day));
-        var dayPolygon = new Phaser.Polygon(dayPoints);
-        this.game.debug.geom(dayPolygon, 'black', true);
-        console.log(containSprite(this.day, this.plant));
-        dayPoints.forEach(function (point) {
-            _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), 'green', true);
-        });
-        points.forEach(function (point) {
-            var color = dayPolygon.contains(point.x, point.y) ? 'blue' : 'red';
-            _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
-        });
-        function containSprite(container, contained) {
-            var containedPoints = rotatedPoints(contained);
-            var containerPolygon = new Phaser.Polygon(rotatedPoints(container));
-            return containedPoints.every(function (point) { return containerPolygon.contains(point.x, point.y); });
-        }
-        function rotatedPoints(sprite) {
-            return rotatePoints(sprite.body.rotation, sprite, extractPoints(sprite));
-        }
-        function extractPoints(sprite) {
-            var tl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y - sprite.height / 2);
-            var bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
-            var tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
-            var br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
-            return [tl, bl, tr, br];
-        }
-        function rotatePoints(rotation, sprite, points) {
-            var center = new Phaser.Point(sprite.x, sprite.y);
-            return points.map(function (point) { return rotatePoint(point, center, rotation); });
-        }
-        function rotatePoint(point, center, rotation) {
-            // let radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
-            // point.x = point.x + radius * Math.cos(rotation);
-            // point.y = point.y + radius * Math.sin(rotation);
-            var tempX = point.x - center.x;
-            var tempY = point.y - center.y;
-            // now apply rotation
-            var rotatedX = tempX * Math.cos(rotation) - tempY * Math.sin(rotation);
-            var rotatedY = tempX * Math.sin(rotation) + tempY * Math.cos(rotation);
-            // translate back
-            point.x = rotatedX + center.x;
-            point.y = rotatedY + center.y;
-            return point;
-        }
+        var polygon = new BoundingPolygon(this.day);
     };
     return App;
 })();

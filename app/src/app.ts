@@ -148,68 +148,7 @@ class App {
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
 
-
-
-
-        let points = rotatePoints(this.plant.body.rotation, this.plant, extractPoints(this.plant));
-
-        let dayPoints = rotatePoints(this.day.body.rotation, this.day, extractPoints(this.day));
-        let dayPolygon = new Phaser.Polygon(dayPoints);
-        
-        this.game.debug.geom(dayPolygon, 'black', true);
-        
-        console.log(containSprite(this.day, this.plant));
-        
-        dayPoints.forEach((point) => {
-            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), 'green', true);
-        });
-        
-        points.forEach((point) => {
-            let color = dayPolygon.contains(point.x, point.y) ? 'blue' : 'red';
-            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
-        });
-        
-        function containSprite(container: Phaser.Sprite, contained: Phaser.Sprite) {
-            let containedPoints = rotatedPoints(contained);
-            let containerPolygon = new Phaser.Polygon(rotatedPoints(container));
-            return containedPoints.every((point) => containerPolygon.contains(point.x, point.y));
-        }
-        
-        function rotatedPoints(sprite: Phaser.Sprite) {
-            return rotatePoints(sprite.body.rotation, sprite, extractPoints(sprite));
-        }
-
-        function extractPoints(sprite: Phaser.Sprite) {
-            let tl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y - sprite.height / 2);
-            let bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
-            let tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
-            let br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
-            return [tl, bl, tr, br];
-        }
-
-        function rotatePoints(rotation: number, sprite: Phaser.Sprite, points: Array<Phaser.Point>) {
-            let center = new Phaser.Point(sprite.x, sprite.y);
-            return points.map((point) => rotatePoint(point, center, rotation));
-        }
-
-        function rotatePoint(point: Phaser.Point, center: Phaser.Point, rotation: number) {
-            // let radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
-            // point.x = point.x + radius * Math.cos(rotation);
-            // point.y = point.y + radius * Math.sin(rotation);
-            
-            let tempX = point.x - center.x;
-            let tempY = point.y - center.y;
-
-            // now apply rotation
-            let rotatedX = tempX * Math.cos(rotation) - tempY * Math.sin(rotation);
-            let rotatedY = tempX * Math.sin(rotation) + tempY * Math.cos(rotation);
-
-            // translate back
-            point.x = rotatedX + center.x;
-            point.y = rotatedY + center.y;
-
-            return point;
-        }
+        let polygon = new BoundingPolygon(this.day);
     }
 }
 
