@@ -1,13 +1,12 @@
 class App {
     constructor() {
         this.game = new Phaser.Game(
-            1000, 600, Phaser.AUTO, 'content', {
+            1200, 600, Phaser.AUTO, 'content', {
                 preload: this.preload,
                 create: this.create,
                 update: this.update,
                 render: this.render,
-                checkCollisions: this.checkCollisions,
-                checkCollisionsForPlant: this.checkCollisionsForPlant
+                checkCollisions: this.checkCollisions
             });
     }
 
@@ -20,19 +19,21 @@ class App {
     night: Period;
     player: Player;
     pivot: Phaser.Point;
+    cloud: Phaser.Sprite;
 
     preload() {
         this.game.load.image('cow', 'img/cow.jpg');
         this.game.load.image('plant', 'img/plant.jpg');
         this.game.load.image('day', 'img/day.png');
         this.game.load.image('night', 'img/night.png');
+        this.game.load.image('cloud', 'img/cloud.png');
+        this.game.load.image('ground', 'img/ground.png');
     }
 
     create() {
-        this.pivot = new Phaser.Point(this.game.world.centerX, this.game.world.centerY);
+        this.pivot = new Phaser.Point(this.game.world.centerX, this.game.world.height);
         this.enemies = [];
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        // this.game.physics.box2d.gravity.y = 0;
         
         this.game.physics.p2.applyGravity = false;
         this.game.physics.p2.applyDamping = false;
@@ -48,6 +49,8 @@ class App {
         this.night.body.debug = true;
 
         this.player = new Player(this.game, this.day, this.night);
+        
+        this.cloud = new Cloud(this.game, this.pivot, 250, 1);
 
         // let player = this.game.add.sprite(0, 0);
 
@@ -81,26 +84,15 @@ class App {
         // this.game.physics.p2.on
 
         this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 100);
-        this.plant.body.angle = 45;
     }
 
     checkCollisions(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
-        if (obj1.sprite == this.plant) {
-            this.checkCollisionsForPlant(obj2.sprite);
-        } else if (obj2.sprite == this.plant) {
-            this.checkCollisionsForPlant(obj2.sprite);
+        if (obj1.sprite == this.cloud && obj2.sprite == this.plant) {
+            this.plant.collidedRain();
         }
         
         // Allow any object to overlap
         return false;
-    }
-
-    checkCollisionsForPlant(object: Phaser.Sprite) {
-        if (object == this.day) {
-            // this.plant.collidedDay();
-        } else if (object == this.night) {
-            // this.plant.collidedNight();
-        }
     }
 
     update() {

@@ -14,7 +14,7 @@ var Plant = (function (_super) {
         this.water = maxWater / 2;
         this.maxEnergy = maxEnergy;
         this.energy = 0;
-        this.energyTimer = game.time.now;
+        this.energyTimer = this.waterTimer = game.time.now;
         this.growth = 0;
         game.add.existing(this);
         game.physics.p2.enable(this);
@@ -50,6 +50,12 @@ var Plant = (function (_super) {
             this.energy += 1;
         }
     };
+    Plant.prototype.increaseWater = function () {
+        if (this.game.time.now > this.waterTimer) {
+            this.waterTimer = this.game.time.now + 50;
+            this.water += 1;
+        }
+    };
     Plant.prototype.startTimer = function (callback) {
         this.game.time.events.add(500, callback, this);
     };
@@ -62,6 +68,9 @@ var Plant = (function (_super) {
     };
     Plant.prototype.collidedNight = function () {
         this.grow();
+    };
+    Plant.prototype.collidedRain = function () {
+        this.increaseWater();
     };
     Plant.prototype.die = function () {
         // this.kill();
