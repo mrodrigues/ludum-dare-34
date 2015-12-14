@@ -26,10 +26,14 @@ class Orbit {
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     }
     
-    addSpeed(speed:number) {
+    addSpeed(speed:number, maxSpeed = this.maxSpeed) {
         let newSpeed = this.angularSpeed + speed;
-        if (Math.abs(newSpeed) > this.maxSpeed) {
-            this.setAngularSpeed(this.maxSpeed);
+        if (Math.abs(newSpeed) > maxSpeed) {
+            if (newSpeed < 0) {
+                this.setAngularSpeed(-maxSpeed);
+            } else {
+                this.setAngularSpeed(maxSpeed);
+            }
         } else {
             this.setAngularSpeed(newSpeed);
         }

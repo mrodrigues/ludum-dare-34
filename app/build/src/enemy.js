@@ -7,6 +7,7 @@ var Enemy = (function (_super) {
     __extends(Enemy, _super);
     function Enemy(game, pivot, key, orbitDistance, maxSpeed) {
         _super.call(this, game, 0, 0, key);
+        this.name = key;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;

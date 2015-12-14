@@ -8,7 +8,6 @@
 // * Enemies animation
 // * GUI
 // * Splash screen and credits
-// * Improve movement physics
 var App = (function () {
     function App() {
         this.game = new Phaser.Game(1200, 600, Phaser.AUTO, 'content', {

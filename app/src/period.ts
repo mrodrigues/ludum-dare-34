@@ -19,6 +19,10 @@ class Period extends Phaser.Sprite {
 		this.orbit.update();
 	}
 	
+	addSpeed(speed: number) {
+		this.orbit.addSpeed(speed);
+	}
+	
 	applyFriction () {
 		this.orbit.interpolateSpeed(this.friction, 0);
 	}

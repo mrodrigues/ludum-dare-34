@@ -10,16 +10,15 @@ class Player {
 	}
 	
 	update() {
-		// TODO: Slow down when changing direction
 		// TODO: Adjust speed and friction;
 		let acceleration = this.acceleration * this.game.time.physicsElapsed;
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 			for (let object of this.objects) {
-				object.orbit.addSpeed(-acceleration);
+				object.addSpeed(-acceleration);
 			}
         } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 			for (let object of this.objects) {
-				object.orbit.addSpeed(acceleration);
+				object.addSpeed(acceleration);
 			}
         } else {
 			for (let object of this.objects) {

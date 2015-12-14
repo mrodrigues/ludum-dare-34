@@ -7,6 +7,7 @@ var Cloud = (function (_super) {
     __extends(Cloud, _super);
     function Cloud(game, pivot, orbitDistance, maxSpeed) {
         _super.call(this, game, 0, 0, 'cloud');
+        this.name = 'cloud';
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
@@ -15,6 +16,9 @@ var Cloud = (function (_super) {
     }
     Cloud.prototype.update = function () {
         this.orbit.update();
+    };
+    Cloud.prototype.addSpeed = function (speed) {
+        this.orbit.addSpeed(speed, true);
     };
     Cloud.prototype.applyFriction = function () {
         this.orbit.interpolateSpeed(this.friction, this.orbit.maxSpeed);

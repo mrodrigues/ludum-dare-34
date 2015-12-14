@@ -8,7 +8,6 @@
 // * Enemies animation
 // * GUI
 // * Splash screen and credits
-// * Improve movement physics
 
 class App {
     constructor() {

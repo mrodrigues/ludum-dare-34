@@ -20,6 +20,9 @@ var Period = (function (_super) {
     Period.prototype.update = function () {
         this.orbit.update();
     };
+    Period.prototype.addSpeed = function (speed) {
+        this.orbit.addSpeed(speed);
+    };
     Period.prototype.applyFriction = function () {
         this.orbit.interpolateSpeed(this.friction, 0);
     };

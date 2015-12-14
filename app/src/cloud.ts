@@ -3,6 +3,7 @@ class Cloud extends Phaser.Sprite {
 	friction: number;
 	constructor(game: Phaser.Game, pivot: Phaser.Point, orbitDistance: number, maxSpeed: number) {
 		super(game, 0, 0, 'cloud');
+		this.name = 'cloud';
 		game.add.existing(this);
 		game.physics.p2.enable(this);
 		this.body.collideWorldBounds = false;
@@ -13,6 +14,10 @@ class Cloud extends Phaser.Sprite {
 	
 	update () {
 		this.orbit.update();
+	}
+	
+	addSpeed(speed: number) {
+		this.orbit.addSpeed(speed, true);
 	}
 	
 	applyFriction () {

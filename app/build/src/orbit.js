@@ -16,10 +16,16 @@ var Orbit = (function () {
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     };
-    Orbit.prototype.addSpeed = function (speed) {
+    Orbit.prototype.addSpeed = function (speed, maxSpeed) {
+        if (maxSpeed === void 0) { maxSpeed = this.maxSpeed; }
         var newSpeed = this.angularSpeed + speed;
-        if (Math.abs(newSpeed) > this.maxSpeed) {
-            this.setAngularSpeed(this.maxSpeed);
+        if (Math.abs(newSpeed) > maxSpeed) {
+            if (newSpeed < 0) {
+                this.setAngularSpeed(-maxSpeed);
+            }
+            else {
+                this.setAngularSpeed(maxSpeed);
+            }
         }
         else {
             this.setAngularSpeed(newSpeed);
