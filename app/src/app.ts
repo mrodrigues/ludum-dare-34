@@ -47,6 +47,9 @@ class App {
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
+        
+        let ground = this.game.add.sprite(0, 0, 'ground');
+        ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height / 2);
 
         this.player = new Player(this.game, this.day, this.night);
         
