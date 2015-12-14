@@ -24,7 +24,6 @@ var AI = (function () {
             case AI.WET:
                 this.wet();
         }
-        console.log(this.currentState);
     };
     AI.prototype.underPeriod = function (period) {
         if (period != this.currentPeriod) {
@@ -58,7 +57,6 @@ var AI = (function () {
         }
     };
     AI.prototype.gettingWet = function () {
-        console.log('getting wet');
         if (this.isWalking()) {
             this.currentState = AI.WET;
             this.previousSpeed = this.enemy.orbit.angularSpeed;

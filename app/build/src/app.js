@@ -32,11 +32,10 @@ var App = (function () {
         this.game.physics.p2.applyGravity = false;
         this.game.physics.p2.applyDamping = false;
         this.game.physics.p2.applySpringForces = false;
-        this.day = new Period(this.game, 'day', 0, 0, 0, 50);
+        this.day = new Period(this.game, 'day', 0, 0, 0, 2);
         this.day.body.debug = true;
         // this.day.anchor.setTo(1, 0.5);
-        this.night = new Period(this.game, 'night', 0, 0, 0, 50);
-        this.night.body.angle = 180;
+        this.night = new Period(this.game, 'night', 0, 0, 180, 2);
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
@@ -130,6 +129,7 @@ var App = (function () {
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
+        this.game.debug.text("speed: " + this.cloud.orbit.angularSpeed, this.cloud.x, this.cloud.y);
         var dayPolygon = new BoundingPolygon(this.day);
         var plantPolygon = this.plant.createPolygon();
         var cowPolygon = new BoundingPolygon(this.cow);

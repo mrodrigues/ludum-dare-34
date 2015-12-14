@@ -13,6 +13,7 @@ class Period extends Phaser.Sprite {
         // this.orbit.startRotation();
 		// this.position.setTo(400, 200);
 		// this.anchor.set(1, 0.5);
+		this.body.angle = initialAngle;
 	}
 	
 	update () {

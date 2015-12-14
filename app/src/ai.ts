@@ -37,8 +37,6 @@ class AI {
 			case AI.WET:
 				this.wet();
 		}
-		
-		console.log(this.currentState);
 	}
 
 	underPeriod(period: Period) {
@@ -76,7 +74,6 @@ class AI {
 	}
 	
 	gettingWet() {
-		console.log('getting wet');
 		if (this.isWalking()) {
 			this.currentState = AI.WET;
 			this.previousSpeed = this.enemy.orbit.angularSpeed;

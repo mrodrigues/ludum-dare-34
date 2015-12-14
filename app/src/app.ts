@@ -28,9 +28,9 @@ class App {
     day: Period;
     night: Period;
     player: Player;
-    pivot: Phaser.Point;
-    cloud: Phaser.Sprite;
+    cloud: Cloud;
     ai: AI;
+    pivot: Phaser.Point;
 
     preload() {
         this.game.load.image('cow', 'img/cow.png');
@@ -50,11 +50,10 @@ class App {
         this.game.physics.p2.applyDamping = false;
         this.game.physics.p2.applySpringForces = false;
 
-        this.day = new Period(this.game, 'day', 0, 0, 0, 50);
+        this.day = new Period(this.game, 'day', 0, 0, 0, 2);
         this.day.body.debug = true;
         // this.day.anchor.setTo(1, 0.5);
-        this.night = new Period(this.game, 'night', 0, 0, 0, 50);
-        this.night.body.angle = 180;
+        this.night = new Period(this.game, 'night', 0, 0, 180, 2);
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
@@ -167,6 +166,8 @@ class App {
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
+        
+        this.game.debug.text("speed: " + this.cloud.orbit.angularSpeed, this.cloud.x, this.cloud.y);
 
         let dayPolygon = new BoundingPolygon(this.day);
         let plantPolygon = this.plant.createPolygon();

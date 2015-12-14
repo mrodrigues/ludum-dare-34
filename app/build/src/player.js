@@ -6,7 +6,7 @@ var Player = (function () {
         }
         this.game = game;
         this.objects = objects;
-        this.acceleration = 1;
+        this.acceleration = 5;
     }
     Player.prototype.update = function () {
         // TODO: Adjust speed and friction;

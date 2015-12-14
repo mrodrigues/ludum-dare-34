@@ -17,7 +17,9 @@ class Cloud extends Phaser.Sprite {
 	}
 	
 	addSpeed(speed: number) {
-		this.orbit.addSpeed(speed);
+		speed *= 10;
+		console.log(speed);
+		this.orbit.addSpeed(speed, this.orbit.maxSpeed + Math.abs(speed));
 	}
 	
 	applyFriction () {

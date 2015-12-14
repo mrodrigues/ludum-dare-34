@@ -6,7 +6,7 @@ class Player {
 	constructor(game, ...objects) {
 		this.game = game;
 		this.objects = objects;
-		this.acceleration = 1;
+		this.acceleration = 5;
 	}
 	
 	update() {

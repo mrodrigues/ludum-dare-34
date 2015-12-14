@@ -16,6 +16,7 @@ var Period = (function (_super) {
         // this.orbit.startRotation();
         // this.position.setTo(400, 200);
         // this.anchor.set(1, 0.5);
+        this.body.angle = initialAngle;
     }
     Period.prototype.update = function () {
         this.orbit.update();
