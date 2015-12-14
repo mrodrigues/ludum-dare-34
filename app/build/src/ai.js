@@ -6,6 +6,7 @@ var AI = (function () {
     AI.prototype.update = function (context) {
         var dayPolygon = new BoundingPolygon(context.day);
         var nightPolygon = new BoundingPolygon(context.night);
+        var clowdPolygon = new BoundingPolygon(context.cloud);
         var enemyPolygon = new BoundingPolygon(this.enemy);
         if (dayPolygon.containPolygon(enemyPolygon)) {
             this.underPeriod(context.day);
@@ -20,6 +21,8 @@ var AI = (function () {
             case AI.WAKING_UP:
                 this.wakingUp();
                 break;
+            case AI.WET:
+                this.wet();
         }
         console.log(this.currentState);
     };
@@ -40,9 +43,30 @@ var AI = (function () {
     AI.prototype.goToSleep = function () {
         this.currentState = AI.GOING_TO_SLEEP;
         this.timer = this.currentTime() + 1000;
+        this.previousSpeed = this.enemy.orbit.angularSpeed;
     };
     AI.prototype.wakeUp = function () {
         this.currentState = AI.WAKING_UP;
+    };
+    AI.prototype.wet = function () {
+        if (this.currentTime() > this.timer) {
+            this.enemy.orbit.setAngularSpeed(-1 * this.previousSpeed);
+            this.currentState = AI.WALKING;
+        }
+        else {
+            this.enemy.orbit.setAngularSpeed(0);
+        }
+    };
+    AI.prototype.gettingWet = function () {
+        console.log('getting wet');
+        if (this.isWalking()) {
+            this.currentState = AI.WET;
+            this.previousSpeed = this.enemy.orbit.angularSpeed;
+            this.timer = this.currentTime() + 1000;
+        }
+        else if (this.isWet()) {
+            this.timer = this.currentTime() + 1000;
+        }
     };
     AI.prototype.goingToSleep = function () {
         this.enemy.orbit.interpolateSpeed(0.1, 0);
@@ -51,8 +75,8 @@ var AI = (function () {
         }
     };
     AI.prototype.wakingUp = function () {
-        this.enemy.orbit.interpolateSpeed(0.1, this.enemy.orbit.maxSpeed);
-        if (this.enemy.orbit.angularSpeed == this.enemy.orbit.maxSpeed) {
+        this.enemy.orbit.interpolateSpeed(0.1, this.previousSpeed);
+        if (this.enemy.orbit.angularSpeed == this.previousSpeed) {
             this.currentState = AI.WALKING;
         }
     };

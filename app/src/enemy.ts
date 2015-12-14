@@ -10,7 +10,7 @@ class Enemy extends Phaser.Sprite {
 		this.body.collideWorldBounds = false;
 		
         this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
-		this.orbit.setAngularSpeed(1);
+		this.orbit.setAngularSpeed(maxSpeed);
 	}
 	
 	update () {

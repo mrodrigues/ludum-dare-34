@@ -16,7 +16,8 @@ class App {
                 create: this.create,
                 update: this.update,
                 render: this.render,
-                checkCollisions: this.checkCollisions
+                checkCollisions: this.checkCollisions,
+                teste: this.teste
             });
     }
 
@@ -64,6 +65,7 @@ class App {
         ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height);
         
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
+        this.cloud.body.debug = true;
 
         this.player = new Player(this.game, this.day, this.night, this.cloud);
 
@@ -87,7 +89,7 @@ class App {
         // player.position.set(this.game.world.width / 2, this.game.world.height);
         // player.position.set(this.game.world.centerX, this.game.world.centerY);
 
-        let cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.5);
+        let cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.3);
         cow.body.debug = true;
         this.cow = cow;
         this.ai = new AI(cow);
@@ -99,10 +101,18 @@ class App {
         this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
         // this.game.physics.p2.on
     }
+    
+    teste() {
+        console.log('teste', arguments);
+    }
 
     checkCollisions(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
         if (obj1.sprite == this.cloud && obj2.sprite == this.plant) {
             this.plant.collidedRain();
+        }
+        
+        if (obj1.sprite == this.cow && obj2.sprite == this.cloud) {
+            this.ai.gettingWet();
         }
         
         // Allow any object to overlap

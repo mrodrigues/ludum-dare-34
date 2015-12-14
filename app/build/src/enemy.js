@@ -13,7 +13,7 @@ var Enemy = (function (_super) {
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
         this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
-        this.orbit.setAngularSpeed(1);
+        this.orbit.setAngularSpeed(maxSpeed);
     }
     Enemy.prototype.update = function () {
         this.orbit.update();

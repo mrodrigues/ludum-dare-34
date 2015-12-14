@@ -9,6 +9,7 @@ class AI {
 	currentState: number;
 	currentPeriod: Period;
 	timer: number;
+	previousSpeed: number;
 	constructor(enemy: Enemy) {
 		this.enemy = enemy;
 		this.currentState = AI.WALKING;
@@ -17,6 +18,7 @@ class AI {
 	update(context: App) {
         let dayPolygon = new BoundingPolygon(context.day);
         let nightPolygon = new BoundingPolygon(context.night);
+		let clowdPolygon = new BoundingPolygon(context.cloud);
 		let enemyPolygon = new BoundingPolygon(this.enemy);
 
         if (dayPolygon.containPolygon(enemyPolygon)) {
@@ -32,6 +34,8 @@ class AI {
 			case AI.WAKING_UP:
 				this.wakingUp();
 				break;
+			case AI.WET:
+				this.wet();
 		}
 		
 		console.log(this.currentState);
@@ -55,10 +59,31 @@ class AI {
 	goToSleep() {
 		this.currentState = AI.GOING_TO_SLEEP;
 		this.timer = this.currentTime() + 1000;
+		this.previousSpeed = this.enemy.orbit.angularSpeed;
 	}
 
 	wakeUp() {
 		this.currentState = AI.WAKING_UP;
+	}
+	
+	wet() {
+		if (this.currentTime() > this.timer) {
+			this.enemy.orbit.setAngularSpeed(-1 * this.previousSpeed);
+			this.currentState = AI.WALKING;
+		} else {
+			this.enemy.orbit.setAngularSpeed(0);
+		}
+	}
+	
+	gettingWet() {
+		console.log('getting wet');
+		if (this.isWalking()) {
+			this.currentState = AI.WET;
+			this.previousSpeed = this.enemy.orbit.angularSpeed;
+			this.timer = this.currentTime() + 1000;
+		} else if (this.isWet()) {
+			this.timer = this.currentTime() + 1000;
+		}
 	}
 
 	goingToSleep() {
@@ -69,8 +94,8 @@ class AI {
 	}
 
 	wakingUp() {
-		this.enemy.orbit.interpolateSpeed(0.1, this.enemy.orbit.maxSpeed);
-		if (this.enemy.orbit.angularSpeed == this.enemy.orbit.maxSpeed) {
+		this.enemy.orbit.interpolateSpeed(0.1, this.previousSpeed);
+		if (this.enemy.orbit.angularSpeed == this.previousSpeed) {
 			this.currentState = AI.WALKING;
 		}
 	}
