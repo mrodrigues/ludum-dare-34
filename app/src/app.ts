@@ -15,8 +15,7 @@ class App {
                 create: this.create,
                 update: this.update,
                 render: this.render,
-                checkCollisions: this.checkCollisions,
-                teste: this.teste
+                checkCollisions: this.checkCollisions
             });
     }
 
@@ -97,11 +96,6 @@ class App {
 
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
-        // this.game.physics.p2.on
-    }
-    
-    teste() {
-        console.log('teste', arguments);
     }
 
     checkCollisions(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {

@@ -14,7 +14,7 @@ var Plant = (function (_super) {
         this.name = 'plant';
         this.water = maxWater / 2;
         this.maxWater = maxWater;
-        this.waterThrottle = 500;
+        this.waterThrottle = 200;
         this.energy = 0;
         this.maxEnergy = maxEnergy;
         this.energyThrottle = 500;
@@ -68,7 +68,7 @@ var Plant = (function (_super) {
         }
     };
     Plant.prototype.startTimer = function (callback) {
-        this.game.time.events.add(500, callback, this);
+        this.game.time.events.add(1000, callback, this);
     };
     Plant.prototype.collideEnemy = function (enemy) {
         var _this = this;

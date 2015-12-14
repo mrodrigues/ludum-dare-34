@@ -13,8 +13,7 @@ var App = (function () {
             create: this.create,
             update: this.update,
             render: this.render,
-            checkCollisions: this.checkCollisions,
-            teste: this.teste
+            checkCollisions: this.checkCollisions
         });
     }
     App.prototype.preload = function () {
@@ -70,10 +69,6 @@ var App = (function () {
         this.enemies.push(cow);
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
-        // this.game.physics.p2.on
-    };
-    App.prototype.teste = function () {
-        console.log('teste', arguments);
     };
     App.prototype.checkCollisions = function (obj1, obj2) {
         if (obj1.sprite == this.cloud && obj2.sprite == this.plant) {
