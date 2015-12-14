@@ -42,7 +42,7 @@ var Plant = (function (_super) {
     };
     Plant.prototype.checkWin = function () {
         if (this.growth > this.maxGrowth) {
-            console.log('Win!');
+            this.game.state.start('win');
         }
     };
     Plant.prototype.decreaseWater = function () {
@@ -81,8 +81,7 @@ var Plant = (function (_super) {
         this.increaseWater();
     };
     Plant.prototype.die = function () {
-        // this.kill();
-        console.log("kill");
+        this.game.state.start('lose');
     };
     Plant.prototype.createPolygon = function () {
         return new BoundingPolygon(this, this.width, 50);

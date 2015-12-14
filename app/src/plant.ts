@@ -53,7 +53,7 @@ class Plant extends Phaser.Sprite {
 	
 	checkWin() {
 		if (this.growth > this.maxGrowth) {
-			console.log('Win!');
+			this.game.state.start('win');
 		}
 	}
 	
@@ -100,8 +100,7 @@ class Plant extends Phaser.Sprite {
 	}
 	
 	die() {
-		// this.kill();
-		console.log("kill");
+		this.game.state.start('lose');
 	}
 	
 	createPolygon() {
