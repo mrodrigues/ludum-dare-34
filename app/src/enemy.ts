@@ -15,5 +15,6 @@ class Enemy extends Phaser.Sprite {
 	
 	update () {
 		this.orbit.update();
+		this.scale.setTo(this.orbit.angularSpeed > 0 ? 1 : -1, 1);
 	}
 }

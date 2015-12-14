@@ -17,6 +17,7 @@ var Enemy = (function (_super) {
     }
     Enemy.prototype.update = function () {
         this.orbit.update();
+        this.scale.setTo(this.orbit.angularSpeed > 0 ? 1 : -1, 1);
     };
     return Enemy;
 })(Phaser.Sprite);
