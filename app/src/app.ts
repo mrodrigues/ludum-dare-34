@@ -1,3 +1,17 @@
+// TODO:
+// * Deploy
+// * Publish
+// * Drag cloud with the sky
+// * Enemies AI
+// * Grow plant
+// * Balance game
+// * Sounds
+// * Music
+// * Enemies animation
+// * GUI
+// * Splash screen and credits
+// * Improve movement physics
+
 class App {
     constructor() {
         this.game = new Phaser.Game(
