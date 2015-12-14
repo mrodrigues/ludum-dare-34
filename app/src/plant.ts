@@ -18,6 +18,7 @@ class Plant extends Phaser.Sprite {
 		game.add.existing(this);
 		game.physics.p2.enable(this);
 		(<Phaser.Physics.P2.Body> this.body).static = true;
+		(<Phaser.Physics.P2.Body> this.body).angle
 		
 		this.startTimer(this.decreaseWater);
 	}

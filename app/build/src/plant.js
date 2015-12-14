@@ -19,6 +19,7 @@ var Plant = (function (_super) {
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.static = true;
+        this.body.angle;
         this.startTimer(this.decreaseWater);
     }
     Plant.prototype.grow = function () {

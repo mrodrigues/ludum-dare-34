@@ -21,7 +21,7 @@ class Orbit {
     
     update() {
         this.object.body.angle += this.angularSpeed;
-        let radians = this.degInRad();
+        let radians = this.object.body.rotation;
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     }
@@ -48,9 +48,5 @@ class Orbit {
     
     private getAngularSpeed() {
         return Math.abs(this.angularSpeed);
-    }
-    
-    private degInRad() {
-        return (<any> this.object.game.math).degToRad(this.object.body.angle);
     }
 }

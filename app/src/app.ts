@@ -46,7 +46,7 @@ class App {
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
-        
+
         this.player = new Player(this.game, this.day, this.night);
 
         // let player = this.game.add.sprite(0, 0);
@@ -76,10 +76,11 @@ class App {
         // this.enemies.push(cow);
 
         window['game'] = this;
-        console.log(this);
         this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
+        // this.game.physics.p2.on
 
-        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 150);
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY);
+        this.plant.body.angle = 45;
     }
 
     checkCollisions(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
@@ -92,12 +93,13 @@ class App {
         // Allow any object to overlap
         return false;
     }
-    
+
     checkCollisionsForPlant(object: Phaser.Sprite) {
         if (object == this.day) {
-            this.plant.collidedDay();
+            console.log('day');
+            // this.plant.collidedDay();
         } else if (object == this.night) {
-            this.plant.collidedNight();
+            // this.plant.collidedNight();
         }
     }
 
@@ -145,6 +147,69 @@ class App {
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
+
+
+
+
+        let points = rotatePoints(this.plant.body.rotation, this.plant, extractPoints(this.plant));
+
+        let dayPoints = rotatePoints(this.day.body.rotation, this.day, extractPoints(this.day));
+        let dayPolygon = new Phaser.Polygon(dayPoints);
+        
+        this.game.debug.geom(dayPolygon, 'black', true);
+        
+        console.log(containSprite(this.day, this.plant));
+        
+        dayPoints.forEach((point) => {
+            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), 'green', true);
+        });
+        
+        points.forEach((point) => {
+            let color = dayPolygon.contains(point.x, point.y) ? 'blue' : 'red';
+            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
+        });
+        
+        function containSprite(container: Phaser.Sprite, contained: Phaser.Sprite) {
+            let containedPoints = rotatedPoints(contained);
+            let containerPolygon = new Phaser.Polygon(rotatedPoints(container));
+            return containedPoints.every((point) => containerPolygon.contains(point.x, point.y));
+        }
+        
+        function rotatedPoints(sprite: Phaser.Sprite) {
+            return rotatePoints(sprite.body.rotation, sprite, extractPoints(sprite));
+        }
+
+        function extractPoints(sprite: Phaser.Sprite) {
+            let tl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y - sprite.height / 2);
+            let bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
+            let tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
+            let br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
+            return [tl, bl, tr, br];
+        }
+
+        function rotatePoints(rotation: number, sprite: Phaser.Sprite, points: Array<Phaser.Point>) {
+            let center = new Phaser.Point(sprite.x, sprite.y);
+            return points.map((point) => rotatePoint(point, center, rotation));
+        }
+
+        function rotatePoint(point: Phaser.Point, center: Phaser.Point, rotation: number) {
+            // let radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
+            // point.x = point.x + radius * Math.cos(rotation);
+            // point.y = point.y + radius * Math.sin(rotation);
+            
+            let tempX = point.x - center.x;
+            let tempY = point.y - center.y;
+
+            // now apply rotation
+            let rotatedX = tempX * Math.cos(rotation) - tempY * Math.sin(rotation);
+            let rotatedY = tempX * Math.sin(rotation) + tempY * Math.cos(rotation);
+
+            // translate back
+            point.x = rotatedX + center.x;
+            point.y = rotatedY + center.y;
+
+            return point;
+        }
     }
 }
 

@@ -13,7 +13,7 @@ var Orbit = (function () {
     }
     Orbit.prototype.update = function () {
         this.object.body.angle += this.angularSpeed;
-        var radians = this.degInRad();
+        var radians = this.object.body.rotation;
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     };
@@ -38,9 +38,6 @@ var Orbit = (function () {
     };
     Orbit.prototype.getAngularSpeed = function () {
         return Math.abs(this.angularSpeed);
-    };
-    Orbit.prototype.degInRad = function () {
-        return this.object.game.math.degToRad(this.object.body.angle);
     };
     return Orbit;
 })();
