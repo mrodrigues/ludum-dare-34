@@ -1,15 +1,19 @@
 class BoundingPolygon {
 	sprite: Phaser.Sprite;
+        width: number;
+        height: number;
         points: Array<Phaser.Point>;
         polygon: Phaser.Polygon;
-	constructor(sprite: Phaser.Sprite) {
+	constructor(sprite: Phaser.Sprite, width = sprite.width, height = sprite.height) {
 		this.sprite = sprite;
+                this.width = width;
+                this.height = height;
                 this.points = this.rotatedPoints(this.sprite);
                 this.polygon = new Phaser.Polygon(this.points.concat([this.points[0]]));
 	}
         
-        containSprite(contained: Phaser.Sprite) {
-                let containedPoints = this.rotatedPoints(contained);
+        containPolygon(contained: BoundingPolygon) {
+                let containedPoints = contained.points;
                 return containedPoints.every((point) => this.polygon.contains(point.x, point.y));
         }
         
@@ -18,10 +22,10 @@ class BoundingPolygon {
         }
         
         private extractPoints(sprite: Phaser.Sprite) {
-                let tl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y - sprite.height / 2);
-                let bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
-                let tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
-                let br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
+                let tl = new Phaser.Point(sprite.body.x - this.width / 2, sprite.body.y - this.height / 2);
+                let bl = new Phaser.Point(sprite.body.x - this.width / 2, sprite.body.y + this.height / 2);
+                let br = new Phaser.Point(sprite.body.x + this.width / 2, sprite.body.y + this.height / 2);
+                let tr = new Phaser.Point(sprite.body.x + this.width / 2, sprite.body.y - this.height / 2);
                 return [tl, bl, br, tr];
         }
         

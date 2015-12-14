@@ -5,35 +5,43 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Plant = (function (_super) {
     __extends(Plant, _super);
-    function Plant(game, x, y, maxWater, maxEnergy) {
+    function Plant(game, x, y, maxWater, maxEnergy, maxGrowth) {
         if (maxWater === void 0) { maxWater = 100; }
         if (maxEnergy === void 0) { maxEnergy = 100; }
+        if (maxGrowth === void 0) { maxGrowth = 100; }
         _super.call(this, game, x, y, 'plant');
+        this.pivot.y = -130;
         this.name = 'plant';
-        this.maxWater = maxWater;
         this.water = maxWater / 2;
-        this.maxEnergy = maxEnergy;
+        this.maxWater = maxWater;
+        this.waterThrottle = 500;
         this.energy = 0;
+        this.maxEnergy = maxEnergy;
+        this.energyThrottle = 500;
         this.energyTimer = this.waterTimer = game.time.now;
         this.growth = 0;
+        this.maxGrowth = maxGrowth;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.static = true;
-        this.body.angle;
+        this.body.clearShapes();
+        this.body.setCircle(10);
+        this.body.setRectangle(10, 10, 10, 10, 10);
         this.startTimer(this.decreaseWater);
     }
     Plant.prototype.grow = function () {
         if (this.game.time.now > this.energyTimer) {
-            this.energyTimer = this.game.time.now + 50;
+            this.energyTimer = this.game.time.now + this.energyThrottle;
             if (this.energy > 0) {
                 this.energy -= 1;
                 this.growth += 1;
+                this.pivot.y += 1;
                 this.checkWin();
             }
         }
     };
     Plant.prototype.checkWin = function () {
-        if (this.growth > 1000) {
+        if (this.growth > this.maxGrowth) {
             console.log('Win!');
         }
     };
@@ -46,13 +54,13 @@ var Plant = (function (_super) {
     };
     Plant.prototype.increaseEnergy = function () {
         if (this.game.time.now > this.energyTimer) {
-            this.energyTimer = this.game.time.now + 50;
+            this.energyTimer = this.game.time.now + this.energyThrottle;
             this.energy += 1;
         }
     };
     Plant.prototype.increaseWater = function () {
         if (this.game.time.now > this.waterTimer) {
-            this.waterTimer = this.game.time.now + 50;
+            this.waterTimer = this.game.time.now + this.waterThrottle;
             this.water += 1;
         }
     };
@@ -75,6 +83,9 @@ var Plant = (function (_super) {
     Plant.prototype.die = function () {
         // this.kill();
         console.log("kill");
+    };
+    Plant.prototype.createPolygon = function () {
+        return new BoundingPolygon(this, this.width, 50);
     };
     return Plant;
 })(Phaser.Sprite);

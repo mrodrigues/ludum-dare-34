@@ -1,7 +1,6 @@
 // TODO:
-// * Drag cloud with the sky
 // * Enemies AI
-// * Grow plant
+// * Dry plant (paint yellow)
 // * Balance game
 // * Sounds
 // * Music
@@ -33,8 +32,8 @@ class App {
     cloud: Phaser.Sprite;
 
     preload() {
-        this.game.load.image('cow', 'img/cow.jpg');
-        this.game.load.image('plant', 'img/plant.jpg');
+        this.game.load.image('cow', 'img/cow.png');
+        this.game.load.image('plant', 'img/plant.png');
         this.game.load.image('day', 'img/day.png');
         this.game.load.image('night', 'img/night.png');
         this.game.load.image('cloud', 'img/cloud.png');
@@ -59,7 +58,7 @@ class App {
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
         
-        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 100);
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 30);
         let ground = this.game.add.sprite(0, 0, 'ground');
         ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height);
         
@@ -113,10 +112,11 @@ class App {
 
         let dayPolygon = new BoundingPolygon(this.day);
         let nightPolygon = new BoundingPolygon(this.night);
+        let plantPolygon = this.plant.createPolygon();
 
-        if (dayPolygon.containSprite(this.plant)) {
+        if (dayPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedDay();
-        } else if (nightPolygon.containSprite(this.plant)) {
+        } else if (nightPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedNight();
         }
         
@@ -157,7 +157,7 @@ class App {
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
 
         let dayPolygon = new BoundingPolygon(this.day);
-        let plantPolygon = new BoundingPolygon(this.plant);
+        let plantPolygon = this.plant.createPolygon();
         
         // this.game.debug.geom(plantPolygon.polygon, 'red', true);
         

@@ -1,7 +1,6 @@
 // TODO:
-// * Drag cloud with the sky
 // * Enemies AI
-// * Grow plant
+// * Dry plant (paint yellow)
 // * Balance game
 // * Sounds
 // * Music
@@ -19,8 +18,8 @@ var App = (function () {
         });
     }
     App.prototype.preload = function () {
-        this.game.load.image('cow', 'img/cow.jpg');
-        this.game.load.image('plant', 'img/plant.jpg');
+        this.game.load.image('cow', 'img/cow.png');
+        this.game.load.image('plant', 'img/plant.png');
         this.game.load.image('day', 'img/day.png');
         this.game.load.image('night', 'img/night.png');
         this.game.load.image('cloud', 'img/cloud.png');
@@ -41,7 +40,7 @@ var App = (function () {
         // this.night.anchor.setTo(1, 0.5);
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
-        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 100);
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 30);
         var ground = this.game.add.sprite(0, 0, 'ground');
         ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height);
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
@@ -83,10 +82,11 @@ var App = (function () {
         this.player.update();
         var dayPolygon = new BoundingPolygon(this.day);
         var nightPolygon = new BoundingPolygon(this.night);
-        if (dayPolygon.containSprite(this.plant)) {
+        var plantPolygon = this.plant.createPolygon();
+        if (dayPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedDay();
         }
-        else if (nightPolygon.containSprite(this.plant)) {
+        else if (nightPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedNight();
         }
         // console.log('angle: ' + this.day.body.angle + ', x: ' + this.day.body.x + ', y: ' + this.day.body.y);
@@ -122,7 +122,7 @@ var App = (function () {
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
         var dayPolygon = new BoundingPolygon(this.day);
-        var plantPolygon = new BoundingPolygon(this.plant);
+        var plantPolygon = this.plant.createPolygon();
         // this.game.debug.geom(plantPolygon.polygon, 'red', true);
         for (var i = 1; i < dayPolygon.points.length - 1; i++) {
             var point = dayPolygon.points[i];

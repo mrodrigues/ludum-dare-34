@@ -1,22 +1,26 @@
 var BoundingPolygon = (function () {
-    function BoundingPolygon(sprite) {
+    function BoundingPolygon(sprite, width, height) {
+        if (width === void 0) { width = sprite.width; }
+        if (height === void 0) { height = sprite.height; }
         this.sprite = sprite;
+        this.width = width;
+        this.height = height;
         this.points = this.rotatedPoints(this.sprite);
         this.polygon = new Phaser.Polygon(this.points.concat([this.points[0]]));
     }
-    BoundingPolygon.prototype.containSprite = function (contained) {
+    BoundingPolygon.prototype.containPolygon = function (contained) {
         var _this = this;
-        var containedPoints = this.rotatedPoints(contained);
+        var containedPoints = contained.points;
         return containedPoints.every(function (point) { return _this.polygon.contains(point.x, point.y); });
     };
     BoundingPolygon.prototype.rotatedPoints = function (sprite) {
         return this.rotatePoints(sprite.body.rotation, sprite, this.extractPoints(sprite));
     };
     BoundingPolygon.prototype.extractPoints = function (sprite) {
-        var tl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y - sprite.height / 2);
-        var bl = new Phaser.Point(sprite.body.x - sprite.width / 2, sprite.body.y + sprite.height / 2);
-        var tr = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y - sprite.height / 2);
-        var br = new Phaser.Point(sprite.body.x + sprite.width / 2, sprite.body.y + sprite.height / 2);
+        var tl = new Phaser.Point(sprite.body.x - this.width / 2, sprite.body.y - this.height / 2);
+        var bl = new Phaser.Point(sprite.body.x - this.width / 2, sprite.body.y + this.height / 2);
+        var br = new Phaser.Point(sprite.body.x + this.width / 2, sprite.body.y + this.height / 2);
+        var tr = new Phaser.Point(sprite.body.x + this.width / 2, sprite.body.y - this.height / 2);
         return [tl, bl, br, tr];
     };
     BoundingPolygon.prototype.rotatePoints = function (rotation, sprite, points) {
