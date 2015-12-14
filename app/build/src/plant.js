@@ -55,13 +55,17 @@ var Plant = (function (_super) {
     Plant.prototype.increaseEnergy = function () {
         if (this.game.time.now > this.energyTimer) {
             this.energyTimer = this.game.time.now + this.energyThrottle;
-            this.energy += 1;
+            if (this.energy < this.maxEnergy) {
+                this.energy += 1;
+            }
         }
     };
     Plant.prototype.increaseWater = function () {
         if (this.game.time.now > this.waterTimer) {
             this.waterTimer = this.game.time.now + this.waterThrottle;
-            this.water += 1;
+            if (this.water < this.maxWater) {
+                this.water += 1;
+            }
         }
     };
     Plant.prototype.startTimer = function (callback) {
