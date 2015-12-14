@@ -96,7 +96,6 @@ class App {
 
     checkCollisionsForPlant(object: Phaser.Sprite) {
         if (object == this.day) {
-            console.log('day');
             // this.plant.collidedDay();
         } else if (object == this.night) {
             // this.plant.collidedNight();
@@ -105,14 +104,15 @@ class App {
 
     update() {
         this.player.update();
-        // let speed = 5;
-        // if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-        //     this.day.orbit.addSpeed(-speed);
-        //     this.night.orbit.addSpeed(-speed);
-        // } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-        //     this.day.orbit.addSpeed(speed);
-        //     this.night.orbit.addSpeed(speed);
-        // }
+        
+        let dayPolygon = new BoundingPolygon(this.day);
+        let nightPolygon = new BoundingPolygon(this.night);
+        
+        if (dayPolygon.containSprite(this.plant)) {
+            this.plant.collidedDay();
+        } else if (nightPolygon.containSprite(this.plant)) {
+            this.plant.collidedNight();
+        }
         // for (let enemy of this.enemies) {
         //     this.plant.collideEnemy(enemy);
         // }
