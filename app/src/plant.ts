@@ -33,6 +33,10 @@ class Plant extends Phaser.Sprite {
 		this.startTimer(this.decreaseWater);
 	}
 	
+	update() {
+		this.tint = Phaser.Color.interpolateRGB(255, 255, 255, 0, 0, 0, this.maxWater, this.maxWater - this.water + 1);
+	}
+	
 	grow() {
 		if (this.game.time.now > this.energyTimer) {
 			this.energyTimer = this.game.time.now + this.energyThrottle;

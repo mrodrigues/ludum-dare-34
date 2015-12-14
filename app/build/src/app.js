@@ -1,12 +1,11 @@
 // TODO:
-// * Enemies AI
-// * Dry plant (paint yellow)
 // * Balance game
 // * Sounds
 // * Music
 // * Enemies animation
 // * GUI
 // * Splash screen and credits
+// * Find a way to paint plant yellow when dry
 var App = (function () {
     function App() {
         this.game = new Phaser.Game(1200, 600, Phaser.AUTO, 'content', {

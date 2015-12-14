@@ -29,6 +29,9 @@ var Plant = (function (_super) {
         this.body.setRectangle(10, 10, 10, 10, 10);
         this.startTimer(this.decreaseWater);
     }
+    Plant.prototype.update = function () {
+        this.tint = Phaser.Color.interpolateRGB(255, 255, 255, 0, 0, 0, this.maxWater, this.maxWater - this.water + 1);
+    };
     Plant.prototype.grow = function () {
         if (this.game.time.now > this.energyTimer) {
             this.energyTimer = this.game.time.now + this.energyThrottle;
