@@ -6,13 +6,16 @@ var AI = (function () {
     AI.prototype.update = function (context) {
         var dayPolygon = new BoundingPolygon(context.day);
         var nightPolygon = new BoundingPolygon(context.night);
-        var clowdPolygon = new BoundingPolygon(context.cloud);
+        var cloudPolygon = new BoundingPolygon(context.cloud);
         var enemyPolygon = new BoundingPolygon(this.enemy);
         if (dayPolygon.containPolygon(enemyPolygon)) {
             this.underPeriod(context.day);
         }
         else if (nightPolygon.containPolygon(enemyPolygon)) {
             this.underPeriod(context.night);
+        }
+        if (cloudPolygon.overlapPolygon(enemyPolygon)) {
+            this.gettingWet();
         }
         switch (this.currentState) {
             case AI.GOING_TO_SLEEP:
@@ -26,11 +29,6 @@ var AI = (function () {
         }
     };
     AI.prototype.underPeriod = function (period) {
-        if (period != this.currentPeriod) {
-            this.changePeriod(period);
-        }
-    };
-    AI.prototype.changePeriod = function (period) {
         this.currentPeriod = period;
         if (this.isWalking() && this.enemy.preferredPeriod != this.currentPeriod) {
             this.goToSleep();
@@ -57,6 +55,7 @@ var AI = (function () {
         }
     };
     AI.prototype.gettingWet = function () {
+        console.log("getting wet");
         if (this.isWalking()) {
             this.currentState = AI.WET;
             this.previousSpeed = this.enemy.orbit.angularSpeed;

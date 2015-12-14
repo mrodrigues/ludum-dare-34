@@ -9,9 +9,14 @@ var BoundingPolygon = (function () {
         this.polygon = new Phaser.Polygon(this.points.concat([this.points[0]]));
     }
     BoundingPolygon.prototype.containPolygon = function (contained) {
-        var _this = this;
-        var containedPoints = contained.points;
-        return containedPoints.every(function (point) { return _this.polygon.contains(point.x, point.y); });
+        return contained.points.every(this.containsPoint.bind(this));
+    };
+    BoundingPolygon.prototype.overlapPolygon = function (overlapped) {
+        return overlapped.points.some(this.containsPoint.bind(this)) ||
+            this.points.some(overlapped.containsPoint.bind(overlapped));
+    };
+    BoundingPolygon.prototype.containsPoint = function (point) {
+        return this.polygon.contains(point.x, point.y);
     };
     BoundingPolygon.prototype.rotatedPoints = function (sprite) {
         return this.rotatePoints(sprite.body.rotation, sprite, this.extractPoints(sprite));

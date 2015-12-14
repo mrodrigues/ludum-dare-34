@@ -1,7 +1,7 @@
 class Enemy extends Phaser.Sprite {
 	orbit: Orbit;
 	preferredPeriod: Period;
-	constructor(game: Phaser.Game, preferredPeriod: Period, pivot: Phaser.Point, key: string, orbitDistance: number, maxSpeed: number) {
+	constructor(game: Phaser.Game, preferredPeriod: Period, pivot: Phaser.Point, key: string, orbitDistance: number, maxSpeed: number, initialAngle: number) {
 		super(game, 0, 0, key);
 		this.name = key;
 		this.preferredPeriod = preferredPeriod;
@@ -9,7 +9,7 @@ class Enemy extends Phaser.Sprite {
 		game.physics.p2.enable(this);
 		this.body.collideWorldBounds = false;
 		
-        this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
+        this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed, initialAngle);
 		this.orbit.setAngularSpeed(maxSpeed);
 	}
 	

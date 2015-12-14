@@ -18,7 +18,7 @@ class AI {
 	update(context: App) {
         let dayPolygon = new BoundingPolygon(context.day);
         let nightPolygon = new BoundingPolygon(context.night);
-		let clowdPolygon = new BoundingPolygon(context.cloud);
+		let cloudPolygon = new BoundingPolygon(context.cloud);
 		let enemyPolygon = new BoundingPolygon(this.enemy);
 
         if (dayPolygon.containPolygon(enemyPolygon)) {
@@ -26,6 +26,10 @@ class AI {
         } else if (nightPolygon.containPolygon(enemyPolygon)) {
             this.underPeriod(context.night);
         }
+		
+		if (cloudPolygon.overlapPolygon(enemyPolygon)) {
+			this.gettingWet();
+		}
 
 		switch (this.currentState) {
 			case AI.GOING_TO_SLEEP:
@@ -40,12 +44,6 @@ class AI {
 	}
 
 	underPeriod(period: Period) {
-		if (period != this.currentPeriod) {
-			this.changePeriod(period);
-		}
-	}
-
-	changePeriod(period: Period) {
 		this.currentPeriod = period;
 		if (this.isWalking() && this.enemy.preferredPeriod != this.currentPeriod) {
 			this.goToSleep();
@@ -74,6 +72,7 @@ class AI {
 	}
 	
 	gettingWet() {
+		console.log("getting wet");
 		if (this.isWalking()) {
 			this.currentState = AI.WET;
 			this.previousSpeed = this.enemy.orbit.angularSpeed;

@@ -5,14 +5,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Enemy = (function (_super) {
     __extends(Enemy, _super);
-    function Enemy(game, preferredPeriod, pivot, key, orbitDistance, maxSpeed) {
+    function Enemy(game, preferredPeriod, pivot, key, orbitDistance, maxSpeed, initialAngle) {
         _super.call(this, game, 0, 0, key);
         this.name = key;
         this.preferredPeriod = preferredPeriod;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
-        this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
+        this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed, initialAngle);
         this.orbit.setAngularSpeed(maxSpeed);
     }
     Enemy.prototype.update = function () {

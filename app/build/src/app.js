@@ -13,7 +13,7 @@ var App = (function () {
             create: this.create,
             update: this.update,
             render: this.render,
-            checkCollisions: this.checkCollisions
+            allowPassThrough: this.allowPassThrough
         });
     }
     App.prototype.preload = function () {
@@ -33,10 +33,7 @@ var App = (function () {
         this.game.physics.p2.applySpringForces = false;
         this.day = new Period(this.game, 'day', 0, 0, 0, 2);
         this.day.body.debug = true;
-        // this.day.anchor.setTo(1, 0.5);
         this.night = new Period(this.game, 'night', 0, 0, 180, 2);
-        // this.night.anchor.setTo(1, 0.5);
-        // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
         this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 30);
         var ground = this.game.add.sprite(0, 0, 'ground');
@@ -44,40 +41,15 @@ var App = (function () {
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
         this.cloud.body.debug = true;
         this.player = new Player(this.game, this.day, this.night, this.cloud);
-        // let player = this.game.add.sprite(0, 0);
-        // player.position.setTo(200, 100);
-        // player.addChild(this.day.body);
-        // player.addChild(this.night);
-        // // player.scale.setTo(20);
-        // this.player = player;
-        // player.body.static = true;
-        // this.day.body.static = true;
-        // this.night.body.static = true;
-        // window['orbit'] = new Orbit(player, 0, 1);
-        // player.position.setTo(400, 200);
-        // player.anchor.set(1, 0.5);
-        // this.night.body.clearShapes();
-        // (<Phaser.Physics.P2.Body> this.day.body).setRectangleFromSprite(this.night);
-        // player.position.set(this.game.world.width / 2, this.game.world.height);
-        // player.position.set(this.game.world.centerX, this.game.world.centerY);
-        var cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.3);
+        var cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.2, -90);
         cow.body.debug = true;
         this.cow = cow;
         this.ai = new AI(cow);
-        // cow.scale.setTo(0.5);
-        // cow.inputEnabled = true;
         this.enemies.push(cow);
         window['game'] = this;
-        this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
+        this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
     };
-    App.prototype.checkCollisions = function (obj1, obj2) {
-        if (obj1.sprite == this.cloud && obj2.sprite == this.plant) {
-            this.plant.collidedRain();
-        }
-        if (obj1.sprite == this.cow && obj2.sprite == this.cloud) {
-            this.ai.gettingWet();
-        }
-        // Allow any object to overlap
+    App.prototype.allowPassThrough = function (obj1, obj2) {
         return false;
     };
     App.prototype.update = function () {
@@ -85,6 +57,7 @@ var App = (function () {
         this.ai.update(this);
         var dayPolygon = new BoundingPolygon(this.day);
         var nightPolygon = new BoundingPolygon(this.night);
+        var cloudPolygon = new BoundingPolygon(this.cloud);
         var plantPolygon = this.plant.createPolygon();
         if (dayPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedDay();
@@ -92,18 +65,9 @@ var App = (function () {
         else if (nightPolygon.containPolygon(plantPolygon)) {
             this.plant.collidedNight();
         }
-        // console.log('angle: ' + this.day.body.angle + ', x: ' + this.day.body.x + ', y: ' + this.day.body.y);
-        // for (let enemy of this.enemies) {
-        //     this.plant.collideEnemy(enemy);
-        // }
-        // let radius = this.day.width / 2;
-        // this.day.body.angle += 1;
-        // this.day.body.x = this.pivot.x + radius * Math.cos((<any> this.game.math).degToRad(this.day.body.angle));
-        // this.day.body.y = this.pivot.y + radius * Math.sin((<any> this.game.math).degToRad(this.day.body.angle));
-        // radius = this.night.width / 2;
-        // this.night.body.angle += 1;
-        // this.night.body.x = this.pivot.x + radius * Math.cos((<any> this.game.math).degToRad(this.night.body.angle));
-        // this.night.body.y = this.pivot.y + radius * Math.sin((<any> this.game.math).degToRad(this.night.body.angle));
+        if (cloudPolygon.overlapPolygon(plantPolygon)) {
+            this.plant.collidedRain();
+        }
     };
     App.prototype.render = function () {
         // this.game.debug.pointer(this.game.input.activePointer);
