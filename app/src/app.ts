@@ -30,6 +30,7 @@ class App {
     player: Player;
     pivot: Phaser.Point;
     cloud: Phaser.Sprite;
+    ai: AI;
 
     preload() {
         this.game.load.image('cow', 'img/cow.png');
@@ -86,9 +87,10 @@ class App {
         // player.position.set(this.game.world.width / 2, this.game.world.height);
         // player.position.set(this.game.world.centerX, this.game.world.centerY);
 
-        let cow = new Enemy(this.game, this.pivot, 'cow', 270, 0.5);
+        let cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.5);
         cow.body.debug = true;
         this.cow = cow;
+        this.ai = new AI(cow);
         // cow.scale.setTo(0.5);
         // cow.inputEnabled = true;
         this.enemies.push(cow);
@@ -109,6 +111,7 @@ class App {
 
     update() {
         this.player.update();
+        this.ai.update(this);
 
         let dayPolygon = new BoundingPolygon(this.day);
         let nightPolygon = new BoundingPolygon(this.night);
@@ -158,6 +161,7 @@ class App {
 
         let dayPolygon = new BoundingPolygon(this.day);
         let plantPolygon = this.plant.createPolygon();
+        let cowPolygon = new BoundingPolygon(this.cow);
         
         // this.game.debug.geom(plantPolygon.polygon, 'red', true);
         
@@ -173,6 +177,12 @@ class App {
         });
 
         plantPolygon.points.forEach((point) => {
+            let color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
+            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
+            this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
+        });
+
+        cowPolygon.points.forEach((point) => {
             let color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
             this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
             this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');

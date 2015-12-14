@@ -32,7 +32,7 @@ var Orbit = (function () {
         }
     };
     Orbit.prototype.interpolateSpeed = function (step, target) {
-        var newSpeed = this.tolerance(this.lerp(this.angularSpeed, target, step), 2);
+        var newSpeed = this.tolerance(this.lerp(this.angularSpeed, target, step), target, 2);
         this.setAngularSpeed(newSpeed);
     };
     Orbit.prototype.invertDirection = function () {
@@ -47,9 +47,9 @@ var Orbit = (function () {
     Orbit.prototype.lerp = function (start, end, percent) {
         return (start + percent * (end - start));
     };
-    Orbit.prototype.tolerance = function (x, decimals) {
-        if (Math.abs(x) < Math.pow(10, -decimals)) {
-            return 0;
+    Orbit.prototype.tolerance = function (x, target, decimals) {
+        if (Math.abs(target - x) < Math.pow(10, -decimals)) {
+            return target;
         }
         return x;
     };

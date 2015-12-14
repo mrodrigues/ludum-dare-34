@@ -61,9 +61,10 @@ var App = (function () {
         // (<Phaser.Physics.P2.Body> this.day.body).setRectangleFromSprite(this.night);
         // player.position.set(this.game.world.width / 2, this.game.world.height);
         // player.position.set(this.game.world.centerX, this.game.world.centerY);
-        var cow = new Enemy(this.game, this.pivot, 'cow', 270, 0.5);
+        var cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.5);
         cow.body.debug = true;
         this.cow = cow;
+        this.ai = new AI(cow);
         // cow.scale.setTo(0.5);
         // cow.inputEnabled = true;
         this.enemies.push(cow);
@@ -80,6 +81,7 @@ var App = (function () {
     };
     App.prototype.update = function () {
         this.player.update();
+        this.ai.update(this);
         var dayPolygon = new BoundingPolygon(this.day);
         var nightPolygon = new BoundingPolygon(this.night);
         var plantPolygon = this.plant.createPolygon();
@@ -123,6 +125,7 @@ var App = (function () {
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);
         var dayPolygon = new BoundingPolygon(this.day);
         var plantPolygon = this.plant.createPolygon();
+        var cowPolygon = new BoundingPolygon(this.cow);
         // this.game.debug.geom(plantPolygon.polygon, 'red', true);
         for (var i = 1; i < dayPolygon.points.length - 1; i++) {
             var point = dayPolygon.points[i];
@@ -134,6 +137,11 @@ var App = (function () {
             _this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
         });
         plantPolygon.points.forEach(function (point) {
+            var color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
+            _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
+            _this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
+        });
+        cowPolygon.points.forEach(function (point) {
             var color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
             _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
             _this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');

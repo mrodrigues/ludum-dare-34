@@ -40,7 +40,7 @@ class Orbit {
     }
     
     interpolateSpeed(step: number, target: number) {
-        let newSpeed = this.tolerance(this.lerp(this.angularSpeed, target, step), 2);
+        let newSpeed = this.tolerance(this.lerp(this.angularSpeed, target, step), target, 2);
         this.setAngularSpeed(newSpeed);
     }
     
@@ -60,9 +60,9 @@ class Orbit {
         return (start + percent * (end - start));
     }
     
-    tolerance(x: number, decimals: number) {
-        if (Math.abs(x) < Math.pow(10, -decimals)) {
-            return 0;
+    tolerance(x: number, target: number, decimals: number) {
+        if (Math.abs(target - x) < Math.pow(10, -decimals)) {
+            return target;
         }
         return x;
     }

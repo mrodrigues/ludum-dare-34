@@ -18,7 +18,7 @@ var Cloud = (function (_super) {
         this.orbit.update();
     };
     Cloud.prototype.addSpeed = function (speed) {
-        this.orbit.addSpeed(speed, true);
+        this.orbit.addSpeed(speed);
     };
     Cloud.prototype.applyFriction = function () {
         this.orbit.interpolateSpeed(this.friction, this.orbit.maxSpeed);
