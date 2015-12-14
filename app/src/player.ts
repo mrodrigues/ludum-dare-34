@@ -1,6 +1,6 @@
 class Player {
 	game: Phaser.Game;
-	objects: Array<Period>;
+	objects: Array<any>;
 	acceleration: number;
 	
 	constructor(game, ...objects) {
@@ -15,16 +15,10 @@ class Player {
 		let acceleration = this.acceleration * this.game.time.physicsElapsed;
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 			for (let object of this.objects) {
-				if (object.orbit.direction > 0) {
-					object.orbit.invertDirection();
-				}
-				object.orbit.addSpeed(acceleration);
+				object.orbit.addSpeed(-acceleration);
 			}
         } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 			for (let object of this.objects) {
-				if (object.orbit.direction < 0) {
-					object.orbit.invertDirection();
-				}
 				object.orbit.addSpeed(acceleration);
 			}
         } else {

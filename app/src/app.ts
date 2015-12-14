@@ -1,6 +1,4 @@
 // TODO:
-// * Deploy
-// * Publish
 // * Drag cloud with the sky
 // * Enemies AI
 // * Grow plant
@@ -62,12 +60,13 @@ class App {
         // this.night.body.position.setTo(200, 100);
         this.night.body.debug = true;
         
+        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 100);
         let ground = this.game.add.sprite(0, 0, 'ground');
-        ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height / 2);
-
-        this.player = new Player(this.game, this.day, this.night);
+        ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height);
         
-        this.cloud = new Cloud(this.game, this.pivot, 250, 1);
+        this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
+
+        this.player = new Player(this.game, this.day, this.night, this.cloud);
 
         // let player = this.game.add.sprite(0, 0);
 
@@ -89,7 +88,7 @@ class App {
         // player.position.set(this.game.world.width / 2, this.game.world.height);
         // player.position.set(this.game.world.centerX, this.game.world.centerY);
 
-        let cow = new Enemy(this.game, 'cow', 1000, 100);
+        let cow = new Enemy(this.game, this.pivot, 'cow', 270, 0.5);
         cow.body.debug = true;
         this.cow = cow;
         // cow.scale.setTo(0.5);
@@ -99,8 +98,6 @@ class App {
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.checkCollisions, this);
         // this.game.physics.p2.on
-
-        this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 100);
     }
 
     checkCollisions(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {

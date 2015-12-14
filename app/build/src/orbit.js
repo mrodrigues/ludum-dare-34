@@ -1,8 +1,6 @@
 var Orbit = (function () {
-    function Orbit(object, pivot, radius, maxSpeed, initialAngle, initialDirection) {
+    function Orbit(object, pivot, radius, maxSpeed, initialAngle) {
         if (initialAngle === void 0) { initialAngle = 0; }
-        if (initialDirection === void 0) { initialDirection = 1; }
-        this.direction = initialDirection;
         this.body = object.body;
         this.object = object;
         this.maxSpeed = maxSpeed;
@@ -13,31 +11,41 @@ var Orbit = (function () {
     }
     Orbit.prototype.update = function () {
         this.object.body.angle += this.angularSpeed;
-        var radians = this.object.body.rotation - Math.PI / 2;
+        var worldRotationOffset = Math.PI / 2;
+        var radians = this.object.body.rotation - worldRotationOffset;
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     };
     Orbit.prototype.addSpeed = function (speed) {
-        var newSpeed = this.getAngularSpeed() + speed;
-        if (newSpeed > this.maxSpeed) {
+        var newSpeed = this.angularSpeed + speed;
+        if (Math.abs(newSpeed) > this.maxSpeed) {
             this.setAngularSpeed(this.maxSpeed);
-        }
-        else if (newSpeed < 0) {
-            this.setAngularSpeed(0);
         }
         else {
             this.setAngularSpeed(newSpeed);
         }
     };
+    Orbit.prototype.interpolateSpeed = function (step, target) {
+        var newSpeed = this.tolerance(this.lerp(this.angularSpeed, target, step), 2);
+        this.setAngularSpeed(newSpeed);
+    };
     Orbit.prototype.invertDirection = function () {
-        this.direction *= -1;
-        this.setAngularSpeed(this.getAngularSpeed());
+        this.setAngularSpeed(this.angularSpeed * -1);
     };
     Orbit.prototype.setAngularSpeed = function (angularSpeed) {
-        this.angularSpeed = angularSpeed * this.direction;
+        this.angularSpeed = angularSpeed;
     };
-    Orbit.prototype.getAngularSpeed = function () {
+    Orbit.prototype.getAbsAngularSpeed = function () {
         return Math.abs(this.angularSpeed);
+    };
+    Orbit.prototype.lerp = function (start, end, percent) {
+        return (start + percent * (end - start));
+    };
+    Orbit.prototype.tolerance = function (x, decimals) {
+        if (Math.abs(x) < Math.pow(10, -decimals)) {
+            return 0;
+        }
+        return x;
     };
     return Orbit;
 })();

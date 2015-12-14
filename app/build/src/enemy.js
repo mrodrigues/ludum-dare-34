@@ -5,12 +5,12 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Enemy = (function (_super) {
     __extends(Enemy, _super);
-    function Enemy(game, key, orbitDistance, maxSpeed) {
+    function Enemy(game, pivot, key, orbitDistance, maxSpeed) {
         _super.call(this, game, 0, 0, key);
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
-        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), 200, 1);
+        this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
         this.orbit.setAngularSpeed(1);
     }
     Enemy.prototype.update = function () {

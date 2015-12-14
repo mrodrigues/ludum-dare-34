@@ -2,13 +2,11 @@ class Orbit {
     object: Phaser.Sprite;
     body: Phaser.Physics.P2.Body;
     maxSpeed: number;
-    direction: number;
     radius: number;
     pivot: Phaser.Point;
     angularSpeed: number;
 
-    constructor(object: Phaser.Sprite, pivot: Phaser.Point, radius: number, maxSpeed: number, initialAngle = 0, initialDirection = 1) {
-        this.direction = initialDirection;
+    constructor(object: Phaser.Sprite, pivot: Phaser.Point, radius: number, maxSpeed: number, initialAngle = 0) {
         this.body = object.body;
         this.object = object;
         this.maxSpeed = maxSpeed;
@@ -21,32 +19,47 @@ class Orbit {
     
     update() {
         this.object.body.angle += this.angularSpeed;
-        let radians = this.object.body.rotation - Math.PI / 2;
+        
+        let worldRotationOffset = Math.PI / 2;
+        let radians = this.object.body.rotation - worldRotationOffset;
         this.object.body.x = this.pivot.x + this.radius * Math.cos(radians);
         this.object.body.y = this.pivot.y + this.radius * Math.sin(radians);
     }
     
-    addSpeed(speed) {
-        var newSpeed = this.getAngularSpeed() + speed;
-        if (newSpeed > this.maxSpeed) {
+    addSpeed(speed:number) {
+        let newSpeed = this.angularSpeed + speed;
+        if (Math.abs(newSpeed) > this.maxSpeed) {
             this.setAngularSpeed(this.maxSpeed);
-        } else if (newSpeed < 0) {
-            this.setAngularSpeed(0);
         } else {
             this.setAngularSpeed(newSpeed);
         }
     }
     
+    interpolateSpeed(step: number, target: number) {
+        let newSpeed = this.tolerance(this.lerp(this.angularSpeed, target, step), 2);
+        this.setAngularSpeed(newSpeed);
+    }
+    
     invertDirection() {
-        this.direction *= -1;
-        this.setAngularSpeed(this.getAngularSpeed());
+        this.setAngularSpeed(this.angularSpeed * -1);
     }
     
     setAngularSpeed(angularSpeed) {
-        this.angularSpeed = angularSpeed * this.direction;
+        this.angularSpeed = angularSpeed;
     }
     
-    private getAngularSpeed() {
+    getAbsAngularSpeed() {
         return Math.abs(this.angularSpeed);
+    }
+    
+    lerp(start: number, end: number, percent: number) {
+        return (start + percent * (end - start));
+    }
+    
+    tolerance(x: number, decimals: number) {
+        if (Math.abs(x) < Math.pow(10, -decimals)) {
+            return 0;
+        }
+        return x;
     }
 }

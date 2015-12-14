@@ -8,7 +8,7 @@ var Period = (function (_super) {
     function Period(game, key, x, y, initialAngle, maxSpeed) {
         _super.call(this, game, x, y, key);
         this.name = key;
-        this.friction = -5;
+        this.friction = 0.1;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
@@ -21,7 +21,7 @@ var Period = (function (_super) {
         this.orbit.update();
     };
     Period.prototype.applyFriction = function () {
-        this.orbit.addSpeed(this.friction * this.game.time.physicsElapsed);
+        this.orbit.interpolateSpeed(this.friction, 0);
     };
     return Period;
 })(Phaser.Sprite);

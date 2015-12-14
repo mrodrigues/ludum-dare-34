@@ -10,11 +10,14 @@ var Cloud = (function (_super) {
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
-        this.orbit = new Orbit(this, pivot, 250, 1);
-        this.orbit.setAngularSpeed(1);
+        this.friction = 0.1;
+        this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
     }
     Cloud.prototype.update = function () {
         this.orbit.update();
+    };
+    Cloud.prototype.applyFriction = function () {
+        this.orbit.interpolateSpeed(this.friction, this.orbit.maxSpeed);
     };
     return Cloud;
 })(Phaser.Sprite);

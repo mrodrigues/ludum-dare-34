@@ -4,7 +4,7 @@ class Period extends Phaser.Sprite {
 	constructor(game: Phaser.Game, key: string, x: number, y: number, initialAngle: number, maxSpeed: number) {
 		super(game, x, y, key);
 		this.name = key;
-		this.friction = -5;
+		this.friction = 0.1;
 		game.add.existing(this);
 		game.physics.p2.enable(this);
 		this.body.collideWorldBounds = false;
@@ -20,6 +20,6 @@ class Period extends Phaser.Sprite {
 	}
 	
 	applyFriction () {
-		this.orbit.addSpeed(this.friction * this.game.time.physicsElapsed);
+		this.orbit.interpolateSpeed(this.friction, 0);
 	}
 }
