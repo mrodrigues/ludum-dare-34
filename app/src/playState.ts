@@ -15,6 +15,7 @@ class PlayState {
     cloud: Cloud;
     ai: AI;
     pivot: Phaser.Point;
+    bgMusic: Phaser.Sound;
 
     preload() {
         this.game.load.image('cow', 'img/cow.png');
@@ -23,6 +24,7 @@ class PlayState {
         this.game.load.image('night', 'img/night.png');
         this.game.load.image('cloud', 'img/cloud.png');
         this.game.load.image('ground', 'img/ground.png');
+        this.game.load.audio('bg', 'sounds/bg.mp3');
     }
 
     create() {
@@ -58,6 +60,8 @@ class PlayState {
 
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
+        this.bgMusic = this.game.sound.add('bg', 1, true);
+        this.bgMusic.play();
     }
 
     allowPassThrough(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
@@ -144,5 +148,9 @@ class PlayState {
             this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
             this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
         });
+    }
+    
+    shutdown() {
+        this.bgMusic.stop();
     }
 }

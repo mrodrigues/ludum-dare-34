@@ -9,6 +9,7 @@ var PlayState = (function () {
         this.game.load.image('night', 'img/night.png');
         this.game.load.image('cloud', 'img/cloud.png');
         this.game.load.image('ground', 'img/ground.png');
+        this.game.load.audio('bg', 'sounds/bg.mp3');
     };
     PlayState.prototype.create = function () {
         this.debug = false;
@@ -35,6 +36,8 @@ var PlayState = (function () {
         this.enemies.push(cow);
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
+        this.bgMusic = this.game.sound.add('bg', 1, true);
+        this.bgMusic.play();
     };
     PlayState.prototype.allowPassThrough = function (obj1, obj2) {
         return false;
@@ -109,6 +112,12 @@ var PlayState = (function () {
             _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
             _this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
         });
+    };
+    PlayState.prototype.shutdown = function () {
+        this.bgMusic.stop();
+    };
+    PlayState.prototype.stateChange = function () {
+        console.log("state change!");
     };
     return PlayState;
 })();
