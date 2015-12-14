@@ -16,6 +16,9 @@ class PlayState {
     ai: AI;
     pivot: Phaser.Point;
     bgMusic: Phaser.Sound;
+    
+    energyBar: Bar;
+    waterBar: Bar;
 
     preload() {
         this.game.load.image('cow', 'img/cow.png');
@@ -61,7 +64,10 @@ class PlayState {
         window['game'] = this;
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
         this.bgMusic = this.game.sound.add('bg', 1, true);
-        this.bgMusic.play();
+        // this.bgMusic.play();
+        
+        this.energyBar = new Bar(0x00ff00, this.plant.maxEnergy, 200, this.game, 10, 10);
+        this.waterBar = new Bar(0x0000ff, this.plant.maxWater, 200, this.game, 10, 40);
     }
 
     allowPassThrough(obj1: Phaser.Physics.P2.Body, obj2: Phaser.Physics.P2.Body) {
@@ -93,9 +99,13 @@ class PlayState {
 		if (cloudPolygon.overlapPolygon(plantPolygon)) {
 			this.plant.collidedRain();
 		}
+        
+        this.energyBar.setValue(this.plant.energy);
+        this.waterBar.setValue(this.plant.water);
     }
 
     render() {
+        // this.energyBar.width = this.plant.energy;
         // this.game.debug.pointer(this.game.input.activePointer);
         // this.game.debug.spriteInputInfo(this.cow, 32, 32);
         // this.game.debug.spriteCoords(this.cow, 32, 128);
