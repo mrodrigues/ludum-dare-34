@@ -1,5 +1,4 @@
 // TODO:
-// * Balance game
 // * Sounds
 // * Music
 // * Enemies animation
@@ -25,6 +24,7 @@ var App = (function () {
         this.game.load.image('ground', 'img/ground.png');
     };
     App.prototype.create = function () {
+        this.debug = false;
         this.pivot = new Phaser.Point(this.game.world.centerX, this.game.world.height);
         this.enemies = [];
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -32,17 +32,17 @@ var App = (function () {
         this.game.physics.p2.applyDamping = false;
         this.game.physics.p2.applySpringForces = false;
         this.day = new Period(this.game, 'day', 0, 0, 0, 2);
-        this.day.body.debug = true;
+        this.day.body.debug = this.debug;
         this.night = new Period(this.game, 'night', 0, 0, 180, 2);
-        this.night.body.debug = true;
+        this.night.body.debug = this.debug;
         this.plant = new Plant(this.game, this.game.world.centerX, this.game.world.centerY + 30);
         var ground = this.game.add.sprite(0, 0, 'ground');
         ground.position.setTo(this.pivot.x - ground.width / 2, this.pivot.y - ground.height);
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
-        this.cloud.body.debug = true;
+        this.cloud.body.debug = this.debug;
         this.player = new Player(this.game, this.day, this.night, this.cloud);
         var cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.2, -90);
-        cow.body.debug = true;
+        cow.body.debug = this.debug;
         this.cow = cow;
         this.ai = new AI(cow);
         this.enemies.push(cow);
@@ -85,6 +85,9 @@ var App = (function () {
         // this.game.debug.body(this.night, 'green');
         // this.game.debug.spriteBounds(this.day);
         // this.game.debug.body(this.day, 'green');
+        if (!this.debug) {
+            return;
+        }
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
         this.game.debug.text("Water: " + this.plant.water, 700, 64);
         this.game.debug.text("Growth: " + this.plant.growth, 700, 96);

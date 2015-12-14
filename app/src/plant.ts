@@ -26,15 +26,17 @@ class Plant extends Phaser.Sprite {
 		game.add.existing(this);
 		game.physics.p2.enable(this);
 		(<Phaser.Physics.P2.Body> this.body).static = true;
-		(<Phaser.Physics.P2.Body> this.body).clearShapes();
-		(<Phaser.Physics.P2.Body> this.body).setCircle(10);
-		(<Phaser.Physics.P2.Body> this.body).setRectangle(10, 10, 10, 10, 10);
 		
 		this.startTimer(this.decreaseWater);
 	}
 	
 	update() {
-		this.tint = Phaser.Color.interpolateRGB(255, 255, 255, 0, 0, 0, this.maxWater, this.maxWater - this.water + 1);
+		this.tint = Phaser.Color.interpolateRGB(
+				255, 255, 255,
+				0, 0, 0,
+				this.maxWater,
+				this.maxWater - this.water + 1
+			);
 	}
 	
 	grow() {

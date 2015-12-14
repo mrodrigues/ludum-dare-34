@@ -24,9 +24,6 @@ var Plant = (function (_super) {
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.static = true;
-        this.body.clearShapes();
-        this.body.setCircle(10);
-        this.body.setRectangle(10, 10, 10, 10, 10);
         this.startTimer(this.decreaseWater);
     }
     Plant.prototype.update = function () {

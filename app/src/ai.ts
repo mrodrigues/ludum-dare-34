@@ -72,10 +72,9 @@ class AI {
 	}
 	
 	gettingWet() {
-		console.log("getting wet");
 		if (this.isWalking()) {
 			this.currentState = AI.WET;
-			this.previousSpeed = this.enemy.orbit.angularSpeed;
+			this.previousSpeed = this.enemy.orbit.maxSpeed * this.enemy.direction;
 			this.timer = this.currentTime() + 1000;
 		} else if (this.isWet()) {
 			this.timer = this.currentTime() + 1000;
