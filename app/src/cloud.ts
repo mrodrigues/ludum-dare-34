@@ -9,6 +9,8 @@ class Cloud extends Phaser.Sprite {
 		game.physics.p2.enable(this);
 		this.body.collideWorldBounds = false;
 		this.friction = 0.1;
+		this.animations.add('raining', [0, 1, 2, 3], 5, true);
+		this.animations.play('raining');
 		
         this.orbit = new Orbit(this, pivot, orbitDistance, maxSpeed);
 		

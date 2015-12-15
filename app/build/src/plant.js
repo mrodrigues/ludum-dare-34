@@ -8,7 +8,7 @@ var Plant = (function (_super) {
     function Plant(game, x, y, maxWater, maxEnergy, maxGrowth) {
         if (maxWater === void 0) { maxWater = 100; }
         if (maxEnergy === void 0) { maxEnergy = 100; }
-        if (maxGrowth === void 0) { maxGrowth = 100; }
+        if (maxGrowth === void 0) { maxGrowth = 90; }
         _super.call(this, game, x, y, 'plant');
         this.pivot.y = -130;
         this.name = 'plant';
@@ -36,7 +36,7 @@ var Plant = (function (_super) {
             if (this.energy > 0) {
                 this.energy -= 1;
                 this.growth += 1;
-                this.pivot.y += 1;
+                this.pivot.y += 2;
                 this.growSound.play();
                 this.checkWin();
             }

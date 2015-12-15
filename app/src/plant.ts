@@ -11,7 +11,7 @@ class Plant extends Phaser.Sprite {
 	maxGrowth: number;
 	
 	growSound: Phaser.Sound;
-	constructor(game: Phaser.Game, x: number, y: number, maxWater = 100, maxEnergy = 100, maxGrowth = 100) {
+	constructor(game: Phaser.Game, x: number, y: number, maxWater = 100, maxEnergy = 100, maxGrowth = 90) {
 		super(game, x, y, 'plant');
 		this.pivot.y = -130;
 		this.name = 'plant';
@@ -49,7 +49,7 @@ class Plant extends Phaser.Sprite {
 			if (this.energy > 0) {
 				this.energy -= 1;
 				this.growth += 1;
-				this.pivot.y += 1;
+				this.pivot.y += 2;
 				this.growSound.play();
 				this.checkWin();
 			}

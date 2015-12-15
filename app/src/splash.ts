@@ -32,7 +32,7 @@ class Splash {
         this.game.load.image('plant', 'img/plant.png');
         this.game.load.image('day', 'img/day.png');
         this.game.load.image('night', 'img/night.png');
-        this.game.load.image('cloud', 'img/cloud.png');
+        this.game.load.spritesheet('cloud', 'img/cloud.png', 216, 357);
         this.game.load.image('ground', 'img/ground.png');
 	}
 
