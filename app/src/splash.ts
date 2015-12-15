@@ -45,7 +45,6 @@ class Splash {
 	}
 
 	preload() {
-		console.log('preload')
 		this.loadScripts();
 		this.loadImages();
 		this.loadFonts();

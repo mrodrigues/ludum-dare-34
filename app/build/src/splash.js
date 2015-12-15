@@ -37,7 +37,6 @@ var Splash = (function () {
     Splash.prototype.loadFonts = function () {
     };
     Splash.prototype.preload = function () {
-        console.log('preload');
         this.loadScripts();
         this.loadImages();
         this.loadFonts();

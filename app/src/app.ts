@@ -13,7 +13,6 @@ class App {
     }
 
   preload() {
-    console.log('app')
     this.game.load.image('loading', 'img/loading.png');
     this.game.load.script('splash', 'app/build/src/splash.js');
   }
