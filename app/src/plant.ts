@@ -31,7 +31,7 @@ class Plant extends Phaser.Sprite {
 
 		this.startTimer(this.decreaseWater);
 		
-		this.growSound = game.sound.add('grow');
+		this.growSound = game.sound.add('grow', 0.5);
 	}
 
 	update() {

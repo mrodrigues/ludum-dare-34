@@ -19,7 +19,7 @@ var Enemy = (function (_super) {
     Enemy.prototype.update = function () {
         this.orbit.update();
         if (this.orbit.angularSpeed != 0) {
-            this.direction = Math.sign(this.orbit.angularSpeed);
+            this.direction = Phaser.Math.sign(this.orbit.angularSpeed);
             this.scale.setTo(this.direction, 1);
         }
     };

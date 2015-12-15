@@ -25,7 +25,7 @@ var Plant = (function (_super) {
         game.physics.p2.enable(this);
         this.body.static = true;
         this.startTimer(this.decreaseWater);
-        this.growSound = game.sound.add('grow');
+        this.growSound = game.sound.add('grow', 0.5);
     }
     Plant.prototype.update = function () {
         this.tint = Phaser.Color.interpolateRGB(255, 255, 255, 0, 0, 0, this.maxWater, this.maxWater - this.water + 1);

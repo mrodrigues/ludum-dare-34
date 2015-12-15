@@ -3,15 +3,6 @@ var PlayState = (function () {
         this.game = game;
     }
     PlayState.prototype.preload = function () {
-        this.game.load.image('cow', 'img/cow.png');
-        this.game.load.image('plant', 'img/plant.png');
-        this.game.load.image('day', 'img/day.png');
-        this.game.load.image('night', 'img/night.png');
-        this.game.load.image('cloud', 'img/cloud.png');
-        this.game.load.image('ground', 'img/ground.png');
-        this.game.load.audio('bg', 'sounds/bg.mp3');
-        this.game.load.audio('grow', 'sounds/grow.wav');
-        this.game.load.audio('rain', 'sounds/rain.mp3');
     };
     PlayState.prototype.create = function () {
         this.debug = false;

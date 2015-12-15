@@ -5,15 +5,30 @@
 // * Find a way to paint plant yellow when dry
 
 class App {
+    game: Phaser.Game;
     constructor() {
-        let game = new Phaser.Game(1200, 600, Phaser.AUTO, 'content');
-        game.state.add('play', new PlayState(game));
-        game.state.add('win', new WinState(game));
-        game.state.add('lose', new LoseState(game));
-        game.state.start('play');
+        this.game = new Phaser.Game(1200, 600, Phaser.AUTO, 'content');
+        this.game.state.add('app', this);
+        this.game.state.start('app');
+        // game.state.add('play', new PlayState(game));
+        // game.state.add('win', new WinState(game));
+        // game.state.add('lose', new LoseState(game));
+        // game.state.add('splash', new Splash(game));
+        // game.state.start('splash');
     }
+
+  preload() {
+    console.log('app')
+    this.game.load.image('loading', 'img/loading.png');
+    this.game.load.script('splash', 'app/build/src/splash.js');
+  }
+  
+  create () {
+    this.game.state.add('splash', new Splash(this.game));
+    this.game.state.start('splash');
+  }
 }
 
 window.onload = () => {
-    var game = new App();
+    var app = new App();
 };

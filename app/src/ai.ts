@@ -15,7 +15,7 @@ class AI {
 		this.currentState = AI.WALKING;
 	}
 
-	update(context: App) {
+	update(context: PlayState) {
         let dayPolygon = new BoundingPolygon(context.day);
         let nightPolygon = new BoundingPolygon(context.night);
 		let cloudPolygon = new BoundingPolygon(context.cloud);
