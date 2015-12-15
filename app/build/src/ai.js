@@ -1,7 +1,7 @@
 var AI = (function () {
     function AI(enemy) {
         this.enemy = enemy;
-        this.currentState = AI.WALKING;
+        this.setWalking();
     }
     AI.prototype.update = function (context) {
         var dayPolygon = new BoundingPolygon(context.day);
@@ -38,17 +38,17 @@ var AI = (function () {
         }
     };
     AI.prototype.goToSleep = function () {
-        this.currentState = AI.GOING_TO_SLEEP;
+        this.setGoingToSleep();
         this.timer = this.currentTime() + 1000;
         this.previousSpeed = this.enemy.orbit.angularSpeed;
     };
     AI.prototype.wakeUp = function () {
-        this.currentState = AI.WAKING_UP;
+        this.setWakingUp();
     };
     AI.prototype.wet = function () {
         if (this.currentTime() > this.timer) {
             this.enemy.orbit.setAngularSpeed(-1 * this.previousSpeed);
-            this.currentState = AI.WALKING;
+            this.setWalking();
         }
         else {
             this.enemy.orbit.setAngularSpeed(0);
@@ -56,7 +56,7 @@ var AI = (function () {
     };
     AI.prototype.gettingWet = function () {
         if (this.isWalking()) {
-            this.currentState = AI.WET;
+            this.setWet();
             this.previousSpeed = this.enemy.orbit.maxSpeed * this.enemy.direction;
             this.timer = this.currentTime() + 1000;
         }
@@ -67,29 +67,47 @@ var AI = (function () {
     AI.prototype.goingToSleep = function () {
         this.enemy.orbit.interpolateSpeed(0.1, 0);
         if (this.enemy.orbit.angularSpeed == 0) {
-            this.currentState = AI.SLEEPING;
+            this.setSleeping();
         }
     };
     AI.prototype.wakingUp = function () {
         this.enemy.orbit.interpolateSpeed(0.1, this.previousSpeed);
         if (this.enemy.orbit.angularSpeed == this.previousSpeed) {
-            this.currentState = AI.WALKING;
+            this.setWalking();
         }
     };
     AI.prototype.isWalking = function () {
         return this.currentState == AI.WALKING;
     };
+    AI.prototype.setWalking = function () {
+        this.currentState = AI.WALKING;
+        this.enemy.animations.play('walking');
+    };
     AI.prototype.isGoingToSleep = function () {
         return this.currentState == AI.GOING_TO_SLEEP;
+    };
+    AI.prototype.setGoingToSleep = function () {
+        this.currentState = AI.GOING_TO_SLEEP;
     };
     AI.prototype.isSleeping = function () {
         return this.currentState == AI.SLEEPING;
     };
+    AI.prototype.setSleeping = function () {
+        this.currentState = AI.SLEEPING;
+        this.enemy.animations.play('sleeping');
+    };
     AI.prototype.isWakingUp = function () {
         return this.currentState == AI.WAKING_UP;
     };
+    AI.prototype.setWakingUp = function () {
+        this.currentState = AI.WAKING_UP;
+    };
     AI.prototype.isWet = function () {
         return this.currentState == AI.WET;
+    };
+    AI.prototype.setWet = function () {
+        this.currentState = AI.WET;
+        this.enemy.animations.play('wet');
     };
     AI.prototype.currentTime = function () {
         return this.enemy.game.time.now;

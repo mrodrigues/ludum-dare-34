@@ -12,7 +12,7 @@ class AI {
 	previousSpeed: number;
 	constructor(enemy: Enemy) {
 		this.enemy = enemy;
-		this.currentState = AI.WALKING;
+		this.setWalking();
 	}
 
 	update(context: PlayState) {
@@ -53,19 +53,19 @@ class AI {
 	}
 
 	goToSleep() {
-		this.currentState = AI.GOING_TO_SLEEP;
+		this.setGoingToSleep();
 		this.timer = this.currentTime() + 1000;
 		this.previousSpeed = this.enemy.orbit.angularSpeed;
 	}
 
 	wakeUp() {
-		this.currentState = AI.WAKING_UP;
+		this.setWakingUp();
 	}
 	
 	wet() {
 		if (this.currentTime() > this.timer) {
 			this.enemy.orbit.setAngularSpeed(-1 * this.previousSpeed);
-			this.currentState = AI.WALKING;
+			this.setWalking();
 		} else {
 			this.enemy.orbit.setAngularSpeed(0);
 		}
@@ -73,7 +73,7 @@ class AI {
 	
 	gettingWet() {
 		if (this.isWalking()) {
-			this.currentState = AI.WET;
+			this.setWet();
 			this.previousSpeed = this.enemy.orbit.maxSpeed * this.enemy.direction;
 			this.timer = this.currentTime() + 1000;
 		} else if (this.isWet()) {
@@ -84,37 +84,60 @@ class AI {
 	goingToSleep() {
 		this.enemy.orbit.interpolateSpeed(0.1, 0);
 		if (this.enemy.orbit.angularSpeed == 0) {
-			this.currentState = AI.SLEEPING;
+			this.setSleeping();
 		}
 	}
 
 	wakingUp() {
 		this.enemy.orbit.interpolateSpeed(0.1, this.previousSpeed);
 		if (this.enemy.orbit.angularSpeed == this.previousSpeed) {
-			this.currentState = AI.WALKING;
+			this.setWalking();
 		}
 	}
 
 	isWalking() {
 		return this.currentState == AI.WALKING;
 	}
+	
+	setWalking() {
+		this.currentState = AI.WALKING;
+		this.enemy.animations.play('walking');
+	}
 
 	isGoingToSleep() {
 		return this.currentState == AI.GOING_TO_SLEEP;
 	}
+	
+	setGoingToSleep() {
+		this.currentState = AI.GOING_TO_SLEEP;
+	}
 
 	isSleeping() {
 		return this.currentState == AI.SLEEPING;
+	}
+	
+	setSleeping() {
+		this.currentState = AI.SLEEPING;
+		this.enemy.animations.play('sleeping');
 	}
 
 	isWakingUp() {
 		return this.currentState == AI.WAKING_UP;
 	}
 
+	setWakingUp() {
+		this.currentState = AI.WAKING_UP;
+	}
+	
 	isWet() {
 		return this.currentState == AI.WET;
 	}
 
+	setWet() {
+		this.currentState = AI.WET;
+		this.enemy.animations.play('wet');
+	}
+	
 	currentTime() {
 		return this.enemy.game.time.now;
 	}

@@ -10,11 +10,6 @@ class App {
         this.game = new Phaser.Game(1200, 600, Phaser.AUTO, 'content');
         this.game.state.add('app', this);
         this.game.state.start('app');
-        // game.state.add('play', new PlayState(game));
-        // game.state.add('win', new WinState(game));
-        // game.state.add('lose', new LoseState(game));
-        // game.state.add('splash', new Splash(game));
-        // game.state.start('splash');
     }
 
   preload() {

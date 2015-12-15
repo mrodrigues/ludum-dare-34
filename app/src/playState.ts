@@ -50,6 +50,10 @@ class PlayState {
 
         let cow = new Enemy(this.game, this.day, this.pivot, 'cow', 270, 0.2, -90);
         cow.body.debug = this.debug;
+        cow.animations.add('walking', [0], 1, false);
+        cow.animations.add('wet', [1], 1, false);
+        cow.animations.add('sleeping', [2], 1, false);
+        cow.animations.play('walking');
         this.cow = cow;
         this.ai = new AI(cow);
         this.enemies.push(cow);

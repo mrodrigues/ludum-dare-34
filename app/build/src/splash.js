@@ -22,7 +22,7 @@ var Splash = (function () {
     };
     Splash.prototype.loadImages = function () {
         this.game.load.image('loading', 'img/loading.png');
-        this.game.load.image('cow', 'img/cow.png');
+        this.game.load.spritesheet('cow', 'img/cow.png', 265, 172);
         this.game.load.image('plant', 'img/plant.png');
         this.game.load.image('day', 'img/day.png');
         this.game.load.image('night', 'img/night.png');
