@@ -10,8 +10,10 @@ class AI {
 	currentPeriod: Period;
 	timer: number;
 	previousSpeed: number;
-	constructor(enemy: Enemy) {
+	sounds: Array<Phaser.Sound>;
+	constructor(enemy: Enemy, sounds: Array<Phaser.Sound>) {
 		this.enemy = enemy;
+		this.sounds = sounds;
 		this.setWalking();
 	}
 
@@ -76,6 +78,7 @@ class AI {
 			this.setWet();
 			this.previousSpeed = this.enemy.orbit.maxSpeed * this.enemy.direction;
 			this.timer = this.currentTime() + 1000;
+			this.sounds[this.enemy.game.rnd.integerInRange(0, this.sounds.length)].play();
 		} else if (this.isWet()) {
 			this.timer = this.currentTime() + 1000;
 		}

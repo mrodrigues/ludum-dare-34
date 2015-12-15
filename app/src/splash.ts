@@ -24,6 +24,11 @@ class Splash {
         this.game.load.audio('bg', 'sounds/bg.mp3');
         this.game.load.audio('grow', 'sounds/grow.wav');
         this.game.load.audio('rain', 'sounds/rain.mp3');
+        this.game.load.audio('cow1', 'sounds/cow1.wav');
+		this.game.load.audio('cow2', 'sounds/cow2.wav');
+		this.game.load.audio('cow3', 'sounds/cow3.wav');
+		this.game.load.audio('cow4', 'sounds/cow4.wav');
+		this.game.load.audio('cow5', 'sounds/cow5.wav');
 	}
 
 	loadImages() {

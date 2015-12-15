@@ -1,6 +1,7 @@
 var AI = (function () {
-    function AI(enemy) {
+    function AI(enemy, sounds) {
         this.enemy = enemy;
+        this.sounds = sounds;
         this.setWalking();
     }
     AI.prototype.update = function (context) {
@@ -59,6 +60,7 @@ var AI = (function () {
             this.setWet();
             this.previousSpeed = this.enemy.orbit.maxSpeed * this.enemy.direction;
             this.timer = this.currentTime() + 1000;
+            this.sounds[this.enemy.game.rnd.integerInRange(0, this.sounds.length)].play();
         }
         else if (this.isWet()) {
             this.timer = this.currentTime() + 1000;

@@ -5,6 +5,7 @@ var PlayState = (function () {
     PlayState.prototype.preload = function () {
     };
     PlayState.prototype.create = function () {
+        var _this = this;
         this.debug = false;
         this.pivot = new Phaser.Point(this.game.world.centerX, this.game.world.height);
         this.enemies = [];
@@ -29,7 +30,7 @@ var PlayState = (function () {
         cow.animations.add('sleeping', [2], 1, false);
         cow.animations.play('walking');
         this.cow = cow;
-        this.ai = new AI(cow);
+        this.ai = new AI(cow, [1, 2, 3, 4, 5].map(function (n) { return _this.game.sound.add('cow' + n); }));
         this.enemies.push(cow);
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
         this.bgMusic = this.game.sound.add('bg', 1, true);

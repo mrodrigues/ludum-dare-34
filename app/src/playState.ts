@@ -55,7 +55,7 @@ class PlayState {
         cow.animations.add('sleeping', [2], 1, false);
         cow.animations.play('walking');
         this.cow = cow;
-        this.ai = new AI(cow);
+        this.ai = new AI(cow, [1, 2, 3, 4, 5].map((n) => this.game.sound.add('cow' + n)));
         this.enemies.push(cow);
 
         this.game.physics.p2.setPostBroadphaseCallback(this.allowPassThrough, this);
