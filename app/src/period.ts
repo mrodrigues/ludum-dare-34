@@ -1,7 +1,8 @@
 class Period extends Phaser.Sprite {
+	static maxSpeed = 1;
 	orbit: Orbit;
 	friction: number;
-	constructor(game: Phaser.Game, key: string, x: number, y: number, initialAngle: number, maxSpeed: number) {
+	constructor(game: Phaser.Game, key: string, x: number, y: number, initialAngle: number) {
 		super(game, x, y, key);
 		this.name = key;
 		this.friction = 0.1;
@@ -9,10 +10,7 @@ class Period extends Phaser.Sprite {
 		game.physics.p2.enable(this);
 		this.body.collideWorldBounds = false;
 		
-        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), this.height / 2, 10);
-        // this.orbit.startRotation();
-		// this.position.setTo(400, 200);
-		// this.anchor.set(1, 0.5);
+        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), this.height / 2, Period.maxSpeed);
 		this.body.angle = initialAngle;
 	}
 	
@@ -21,7 +19,7 @@ class Period extends Phaser.Sprite {
 	}
 	
 	addSpeed(speed: number) {
-		this.orbit.addSpeed(speed);
+		this.orbit.addSpeed(speed / 2);
 	}
 	
 	applyFriction () {

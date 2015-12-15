@@ -5,27 +5,25 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Period = (function (_super) {
     __extends(Period, _super);
-    function Period(game, key, x, y, initialAngle, maxSpeed) {
+    function Period(game, key, x, y, initialAngle) {
         _super.call(this, game, x, y, key);
         this.name = key;
         this.friction = 0.1;
         game.add.existing(this);
         game.physics.p2.enable(this);
         this.body.collideWorldBounds = false;
-        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), this.height / 2, 10);
-        // this.orbit.startRotation();
-        // this.position.setTo(400, 200);
-        // this.anchor.set(1, 0.5);
+        this.orbit = new Orbit(this, new Phaser.Point(this.game.world.centerX, this.game.world.height), this.height / 2, Period.maxSpeed);
         this.body.angle = initialAngle;
     }
     Period.prototype.update = function () {
         this.orbit.update();
     };
     Period.prototype.addSpeed = function (speed) {
-        this.orbit.addSpeed(speed);
+        this.orbit.addSpeed(speed / 2);
     };
     Period.prototype.applyFriction = function () {
         this.orbit.interpolateSpeed(this.friction, 0);
     };
+    Period.maxSpeed = 1;
     return Period;
 })(Phaser.Sprite);
