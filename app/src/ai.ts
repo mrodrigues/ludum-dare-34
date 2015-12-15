@@ -18,7 +18,7 @@ class AI {
 	update(context: PlayState) {
         let dayPolygon = new BoundingPolygon(context.day);
         let nightPolygon = new BoundingPolygon(context.night);
-		let cloudPolygon = new BoundingPolygon(context.cloud);
+		let cloudPolygon = context.cloud.createPolygon();
 		let enemyPolygon = new BoundingPolygon(this.enemy);
 
         if (dayPolygon.containPolygon(enemyPolygon)) {

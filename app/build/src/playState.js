@@ -46,7 +46,7 @@ var PlayState = (function () {
         this.ai.update(this);
         var dayPolygon = new BoundingPolygon(this.day);
         var nightPolygon = new BoundingPolygon(this.night);
-        var cloudPolygon = new BoundingPolygon(this.cloud);
+        var cloudPolygon = this.cloud.createPolygon();
         var plantPolygon = this.plant.createPolygon();
         for (var _i = 0, _a = this.enemies; _i < _a.length; _i++) {
             var enemy = _a[_i];
@@ -68,22 +68,7 @@ var PlayState = (function () {
         this.waterBar.setValue(this.plant.water);
     };
     PlayState.prototype.render = function () {
-        // this.energyBar.width = this.plant.energy;
-        // this.game.debug.pointer(this.game.input.activePointer);
-        // this.game.debug.spriteInputInfo(this.cow, 32, 32);
-        // this.game.debug.spriteCoords(this.cow, 32, 128);
-        // this.game.debug.spriteInfo(this.cow, 32, 200);
-        // this.game.debug.spriteBounds(this.cow);
-        // this.game.debug.body(this.cow);
-        // this.game.debug.spriteBounds(this.plant);
-        // this.game.debug.body(this.plant);
         var _this = this;
-        // this.game.debug.spriteBounds(this.player);
-        // this.game.debug.body(this.player, 'red');
-        // this.game.debug.spriteBounds(this.player);
-        // this.game.debug.body(this.night, 'green');
-        // this.game.debug.spriteBounds(this.day);
-        // this.game.debug.body(this.day, 'green');
         if (!this.debug) {
             return;
         }
@@ -94,7 +79,7 @@ var PlayState = (function () {
         var dayPolygon = new BoundingPolygon(this.day);
         var plantPolygon = this.plant.createPolygon();
         var cowPolygon = new BoundingPolygon(this.cow);
-        // this.game.debug.geom(plantPolygon.polygon, 'red', true);
+        var cloudPolygon = this.cloud.createPolygon();
         for (var i = 1; i < dayPolygon.points.length - 1; i++) {
             var point = dayPolygon.points[i];
             var previousPoint = dayPolygon.points[i - 1];
@@ -112,6 +97,10 @@ var PlayState = (function () {
         cowPolygon.points.forEach(function (point) {
             var color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
             _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
+            _this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
+        });
+        cloudPolygon.points.forEach(function (point) {
+            _this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), 'yellow', true);
             _this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
         });
     };

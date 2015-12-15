@@ -33,5 +33,8 @@ var Cloud = (function (_super) {
         Phaser.Sprite.prototype.destroy.apply(this, arguments);
         this.rainSound.destroy();
     };
+    Cloud.prototype.createPolygon = function () {
+        return new BoundingPolygon(this, this.width / 2, this.height * 0.8);
+    };
     return Cloud;
 })(Phaser.Sprite);

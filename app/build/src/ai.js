@@ -6,7 +6,7 @@ var AI = (function () {
     AI.prototype.update = function (context) {
         var dayPolygon = new BoundingPolygon(context.day);
         var nightPolygon = new BoundingPolygon(context.night);
-        var cloudPolygon = new BoundingPolygon(context.cloud);
+        var cloudPolygon = context.cloud.createPolygon();
         var enemyPolygon = new BoundingPolygon(this.enemy);
         if (dayPolygon.containPolygon(enemyPolygon)) {
             this.underPeriod(context.day);

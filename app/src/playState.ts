@@ -78,7 +78,7 @@ class PlayState {
 
         let dayPolygon = new BoundingPolygon(this.day);
         let nightPolygon = new BoundingPolygon(this.night);
-        let cloudPolygon = new BoundingPolygon(this.cloud);
+        let cloudPolygon = this.cloud.createPolygon();
         let plantPolygon = this.plant.createPolygon();
         
         for (let enemy of this.enemies) {
@@ -103,23 +103,6 @@ class PlayState {
     }
 
     render() {
-        // this.energyBar.width = this.plant.energy;
-        // this.game.debug.pointer(this.game.input.activePointer);
-        // this.game.debug.spriteInputInfo(this.cow, 32, 32);
-        // this.game.debug.spriteCoords(this.cow, 32, 128);
-        // this.game.debug.spriteInfo(this.cow, 32, 200);
-        // this.game.debug.spriteBounds(this.cow);
-        // this.game.debug.body(this.cow);
-        // this.game.debug.spriteBounds(this.plant);
-        // this.game.debug.body(this.plant);
-        
-        // this.game.debug.spriteBounds(this.player);
-        // this.game.debug.body(this.player, 'red');
-        // this.game.debug.spriteBounds(this.player);
-        // this.game.debug.body(this.night, 'green');
-        // this.game.debug.spriteBounds(this.day);
-        // this.game.debug.body(this.day, 'green');
-        
         if (!this.debug) { return; }
 
         this.game.debug.text("Energy: " + this.plant.energy, 700, 32);
@@ -131,8 +114,7 @@ class PlayState {
         let dayPolygon = new BoundingPolygon(this.day);
         let plantPolygon = this.plant.createPolygon();
         let cowPolygon = new BoundingPolygon(this.cow);
-        
-        // this.game.debug.geom(plantPolygon.polygon, 'red', true);
+        let cloudPolygon = this.cloud.createPolygon();
         
         for (let i = 1; i < dayPolygon.points.length - 1; i++) {
             let point = dayPolygon.points[i];
@@ -154,6 +136,11 @@ class PlayState {
         cowPolygon.points.forEach((point) => {
             let color = dayPolygon.polygon.contains(point.x, point.y) ? 'green' : 'red';
             this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), color, true);
+            this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
+        });
+        
+        cloudPolygon.points.forEach((point) => {
+            this.game.debug.geom(new Phaser.Circle(point.x, point.y, 10), 'yellow', true);
             this.game.debug.text('(' + point.x + ',' + point.y + ')', point.x - 20, point.y - 20, 'white');
         });
     }

@@ -36,4 +36,8 @@ class Cloud extends Phaser.Sprite {
 		Phaser.Sprite.prototype.destroy.apply(this, arguments);
 		this.rainSound.destroy();
 	}
+
+	createPolygon() {
+		return new BoundingPolygon(this, this.width / 2, this.height * 0.8);
+	}
 }
