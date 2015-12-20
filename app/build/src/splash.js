@@ -16,18 +16,17 @@ var Splash = (function () {
         this.game.load.script('loseState', 'app/build/src/loseState.js');
     };
     Splash.prototype.loadBgm = function () {
+        var _this = this;
         this.game.load.audio('bg', 'sounds/bg.mp3');
         this.game.load.audio('grow', 'sounds/grow.wav');
         this.game.load.audio('rain', 'sounds/rain.mp3');
-        this.game.load.audio('cow1', 'sounds/cow1.wav');
-        this.game.load.audio('cow2', 'sounds/cow2.wav');
-        this.game.load.audio('cow3', 'sounds/cow3.wav');
-        this.game.load.audio('cow4', 'sounds/cow4.wav');
-        this.game.load.audio('cow5', 'sounds/cow5.wav');
+        [1, 2, 3, 4, 5].map(function (n) { return _this.game.load.audio('cow' + n, 'sounds/cow' + n + '.wav'); });
+        [1, 2, 3, 4].map(function (n) { return _this.game.load.audio('rat' + n, 'sounds/rat' + n + '.wav'); });
     };
     Splash.prototype.loadImages = function () {
         this.game.load.image('loading', 'img/loading.png');
         this.game.load.spritesheet('cow', 'img/cow.png', 265, 172);
+        this.game.load.spritesheet('rat', 'img/rat.png', 169, 102);
         this.game.load.image('plant', 'img/plant.png');
         this.game.load.image('day', 'img/day.png');
         this.game.load.image('night', 'img/night.png');

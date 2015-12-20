@@ -9,6 +9,7 @@ var PlayState = (function () {
         this.debug = false;
         this.pivot = new Phaser.Point(this.game.world.centerX, this.game.world.height);
         this.enemies = [];
+        this.ais = [];
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.applyGravity = false;
         this.game.physics.p2.applyDamping = false;
@@ -27,8 +28,16 @@ var PlayState = (function () {
         cow.animations.add('sleeping', [2], 1, false);
         cow.animations.play('walking');
         this.cow = cow;
-        this.ai = new AI(cow, [1, 2, 3, 4, 5].map(function (n) { return _this.game.sound.add('cow' + n); }));
+        this.ais.push(new AI(cow, [1, 2, 3, 4, 5].map(function (n) { return _this.game.sound.add('cow' + n); })));
         this.enemies.push(cow);
+        var rat = new Enemy(this.game, this.night, this.pivot, 'rat', 270, 0.2, 90);
+        rat.body.debug = this.debug;
+        rat.animations.add('walking', [0], 1, false);
+        rat.animations.add('wet', [1], 1, false);
+        rat.animations.add('sleeping', [2], 1, false);
+        rat.animations.play('walking');
+        this.ais.push(new AI(rat, [1, 2, 3, 4].map(function (n) { return _this.game.sound.add('rat' + n); })));
+        this.enemies.push(rat);
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
         this.cloud.body.debug = this.debug;
         this.player = new Player(this.game, this.day, this.night, this.cloud);
@@ -43,8 +52,9 @@ var PlayState = (function () {
         return false;
     };
     PlayState.prototype.update = function () {
+        var _this = this;
         this.player.update();
-        this.ai.update(this);
+        this.ais.forEach(function (ai) { return ai.update(_this); });
         var dayPolygon = new BoundingPolygon(this.day);
         var nightPolygon = new BoundingPolygon(this.night);
         var cloudPolygon = this.cloud.createPolygon();

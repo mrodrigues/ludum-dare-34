@@ -13,7 +13,7 @@ class PlayState {
     night: Period;
     player: Player;
     cloud: Cloud;
-    ai: AI;
+    ais: Array<AI>;
     pivot: Phaser.Point;
     bgMusic: Phaser.Sound;
     
@@ -27,6 +27,7 @@ class PlayState {
         this.debug = false;
         this.pivot = new Phaser.Point(this.game.world.centerX, this.game.world.height);
         this.enemies = [];
+        this.ais = [];
         this.game.physics.startSystem(Phaser.Physics.P2JS);
 
         this.game.physics.p2.applyGravity = false;
@@ -50,8 +51,17 @@ class PlayState {
         cow.animations.add('sleeping', [2], 1, false);
         cow.animations.play('walking');
         this.cow = cow;
-        this.ai = new AI(cow, [1, 2, 3, 4, 5].map((n) => this.game.sound.add('cow' + n)));
+        this.ais.push(new AI(cow, [1, 2, 3, 4, 5].map((n) => this.game.sound.add('cow' + n))));
         this.enemies.push(cow);
+        
+        let rat = new Enemy(this.game, this.night, this.pivot, 'rat', 270, 0.2, 90);
+        rat.body.debug = this.debug;
+        rat.animations.add('walking', [0], 1, false);
+        rat.animations.add('wet', [1], 1, false);
+        rat.animations.add('sleeping', [2], 1, false);
+        rat.animations.play('walking');
+        this.ais.push(new AI(rat, [1, 2, 3, 4].map((n) => this.game.sound.add('rat' + n))));
+        this.enemies.push(rat);
 
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
         this.cloud.body.debug = this.debug;
@@ -74,7 +84,7 @@ class PlayState {
 
     update() {
         this.player.update();
-        this.ai.update(this);
+        this.ais.forEach((ai) => ai.update(this));
 
         let dayPolygon = new BoundingPolygon(this.day);
         let nightPolygon = new BoundingPolygon(this.night);
