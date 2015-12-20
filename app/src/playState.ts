@@ -63,7 +63,7 @@ class PlayState {
         this.ais.push(new AI(rat, [1, 2, 3, 4].map((n) => this.game.sound.add('rat' + n))));
         this.enemies.push(rat);
 
-        this.cloud = new Cloud(this.game, this.pivot, 400, 0.2);
+        this.cloud = new Cloud(this.game, this.pivot, 400, 0.3);
         this.cloud.body.debug = this.debug;
 
         this.player = new Player(this.game, this.day, this.night, this.cloud);

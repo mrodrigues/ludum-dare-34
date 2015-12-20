@@ -60,7 +60,7 @@ var AI = (function () {
             this.setWet();
             this.previousSpeed = this.enemy.orbit.maxSpeed * this.enemy.direction;
             this.timer = this.currentTime() + 1000;
-            this.sounds[this.enemy.game.rnd.integerInRange(0, this.sounds.length)].play();
+            this.sounds[this.enemy.game.rnd.integerInRange(0, this.sounds.length - 1)].play();
         }
         else if (this.isWet()) {
             this.timer = this.currentTime() + 1000;

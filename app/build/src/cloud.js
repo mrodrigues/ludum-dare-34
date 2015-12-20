@@ -23,7 +23,6 @@ var Cloud = (function (_super) {
         this.rainSound.volume = (180 - Math.abs(this.angle)) / 180;
     };
     Cloud.prototype.addSpeed = function (speed) {
-        speed *= 10;
         this.orbit.addSpeed(speed, this.orbit.maxSpeed + Math.abs(speed));
     };
     Cloud.prototype.applyFriction = function () {

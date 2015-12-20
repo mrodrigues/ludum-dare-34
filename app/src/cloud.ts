@@ -24,7 +24,6 @@ class Cloud extends Phaser.Sprite {
 	}
 	
 	addSpeed(speed: number) {
-		speed *= 10;
 		this.orbit.addSpeed(speed, this.orbit.maxSpeed + Math.abs(speed));
 	}
 	
