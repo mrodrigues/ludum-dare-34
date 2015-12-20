@@ -21,7 +21,7 @@ var Splash = (function () {
         this.game.load.audio('grow', 'sounds/grow.wav');
         this.game.load.audio('rain', 'sounds/rain.mp3');
         [1, 2, 3, 4, 5].map(function (n) { return _this.game.load.audio('cow' + n, 'sounds/cow' + n + '.wav'); });
-        [1, 2, 3, 4].map(function (n) { return _this.game.load.audio('rat' + n, 'sounds/rat' + n + '.wav'); });
+        [1, 2].map(function (n) { return _this.game.load.audio('rat' + n, 'sounds/rat' + n + '.wav'); });
     };
     Splash.prototype.loadImages = function () {
         this.game.load.image('loading', 'img/loading.png');

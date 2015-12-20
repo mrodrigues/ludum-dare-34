@@ -25,7 +25,7 @@ class Splash {
         this.game.load.audio('grow', 'sounds/grow.wav');
         this.game.load.audio('rain', 'sounds/rain.mp3');
 		[1, 2, 3, 4, 5].map((n) => this.game.load.audio('cow' + n, 'sounds/cow' + n +'.wav'));
-		[1, 2, 3, 4].map((n) => this.game.load.audio('rat' + n, 'sounds/rat' + n +'.wav'));
+		[1, 2].map((n) => this.game.load.audio('rat' + n, 'sounds/rat' + n +'.wav'));
 	}
 
 	loadImages() {

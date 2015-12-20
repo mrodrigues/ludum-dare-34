@@ -60,7 +60,7 @@ class PlayState {
         rat.animations.add('wet', [1], 1, false);
         rat.animations.add('sleeping', [2], 1, false);
         rat.animations.play('walking');
-        this.ais.push(new AI(rat, [1, 2, 3, 4].map((n) => this.game.sound.add('rat' + n))));
+        this.ais.push(new AI(rat, [1, 2].map((n) => this.game.sound.add('rat' + n))));
         this.enemies.push(rat);
 
         this.cloud = new Cloud(this.game, this.pivot, 400, 0.3);
